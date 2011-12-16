@@ -1,0 +1,137 @@
+<!-- 
+  LINBOXING - internal.xml.in
+  Internal function documentation template file for linboxing
+  Paul Smith
+
+  Copyright (C)  2007-2008
+  Paul Smith
+  National University of Ireland Galway
+
+  This file is part of the linboxing GAP package. 
+  
+  The linboxing package is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by the 
+  Free Software Foundation; either version 2 of the License, or (at your 
+  option) any later version.
+  
+  The linboxing package is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+  more details.
+  
+  You should have received a copy of the GNU General Public License along with 
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  $Id: internal.xml.in 90 2008-01-29 15:10:15Z pas $
+-->
+<!-- ********************************************************** -->
+
+<Chapter>
+  <Heading>Internal Function Reference</Heading>
+
+  These are functions that are used internally in the &linboxing; package.
+  They should not be needed by users of the package, but may be useful to 
+  developers and are provided for completeness
+  
+  <Section>
+  <Heading>Kernel Module Functions</Heading>
+  
+  These functions are implemented directly in C or C++ in the kernel module.
+
+  <ManSection>
+  <Func Name="LinBox.DETERMINANT" Arg="M, field-id"/>
+  <Description>
+  Kernel module function to calculate the determinant of a matrix. 
+  Called by the wrapper <Ref Func="LinBox.DeterminantMat"/>.
+  The <A>field-id</A> parameter should be 0 for a matrix of integers, 
+  or the size of the field if the matrix is over a finite field.
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.RANK" Arg="M, field-id"/>
+  <Description>
+  Kernel module function to calculate the rank of a matrix. 
+  Called by the wrapper <Ref Func="LinBox.RankMat"/>.
+  The <A>field-id</A> parameter should be 0 for a matrix of integers, 
+  or the size of the field if the matrix is over a finite field.
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.TRACE" Arg="M, field-id"/>
+  <Description>
+  Kernel module function to calculate the determinant of a matrix. 
+  Called by the wrapper <Ref Func="LinBox.TraceMat"/>.
+  The <A>field-id</A> parameter should be 0 for a matrix of integers, 
+  or the size of the field if the matrix is over a finite field.
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.SOLVE" Arg="M, b, field-id"/>
+  <Description>
+  Kernel module function to calculate the solution of a matrix. 
+  Called by the wrapper <Ref Func="LinBox.SolutionMat"/>.
+  The <A>field-id</A> parameter should be 0 when the matrix and vector contains
+  integers, or the size of the field if the matrix and vector are over a finite 
+  field (which must naturally be the same for both).
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.TEST_INT_CONVERSION_INTERNAL" Arg="z"/>
+  <Description>
+  Tests the GAP-LinBox and LinBox-GAP integer conversion. Returns the integer 
+  <A>z</A> (which may be large) after it has been converted into LinBox format
+  and then back. 
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.TEST_VECTOR_CONVERSION_INTERNAL" Arg="v, field-id"/>
+  <Description>
+  Tests the GAP-LinBox and LinBox-GAP vector conversion. Returns the vector 
+  <A>v</A> after it has been converted into LinBox format
+  and then back. 
+  The <A>field-id</A> parameter should be 0 for a vector of integers, 
+  or the size of the field if the vector is over a finite field.
+  This function is called by <Ref Func="LinBox.TEST_VECTOR_CONVERSION"/>.
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.TEST_MATRIX_CONVERSION_INTERNAL" Arg="M, field-id"/>
+  <Description>
+  Tests the GAP-LinBox and LinBox-GAP matrix conversion. Returns the matrix
+  <A>v</A> after it has been converted into LinBox format
+  and then back. 
+  The <A>field-id</A> parameter should be 0 for a matrix of integers, 
+  or the size of the field if the matrix is over a finite field.
+  This function is called by <Ref Func="LinBox.TEST_MATRIX_CONVERSION"/>.
+  </Description>
+  </ManSection>
+
+  <ManSection>
+  <Func Name="LinBox.MAX_GAP_SMALL_INT" Arg=""/>
+  <Description>
+  Kernel module function which returns the size of the largest integer that 
+  the &linboxing; kernel module thinks can be represented as a &GAP; small 
+  integer. This number is different on 32- or 64-bit machines, but &linboxing;
+  tries to check with &GAP; when it compiles to find out which value to use.
+  </Description>
+  </ManSection>
+  <Example><![CDATA[
+  gap> z := LinBox.MAX_GAP_SMALL_INT();
+  1152921504606846975
+  gap> IsSmallIntRep(z);
+  true
+  gap> IsSmallIntRep(z+1);
+  ]]></Example>
+
+  <!-- GAPDocSourceSuffix="_manInt" -->
+  </Section>
+
+ 
+</Chapter>
+

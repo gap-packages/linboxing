@@ -1,0 +1,65 @@
+<!-- 
+  LINBOXING - implementation.xml
+  Implementation documentation section 
+  Paul Smith
+  
+  Copyright (C)  2007-2008
+  Paul Smith
+  National University of Ireland Galway
+  
+  This file is part of the linboxing GAP package. 
+  
+  The linboxing package is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by the 
+  Free Software Foundation; either version 2 of the License, or (at your 
+  option) any later version.
+  
+  The linboxing package is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+  more details.
+  
+  You should have received a copy of the GNU General Public License along with 
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  $Id: implementation.xml 99 2008-04-22 11:54:32Z pas $
+  -->
+  
+<!-- ********************************************************** -->
+<Chapter> 
+  <Heading>Implementation</Heading>
+  
+  The &linboxing; package consists three parts. The first part is written in
+  &GAP;, and this consists of test routines and wrappers for functions in the 
+  &linboxing; kernel module. The second part is the kernel
+  module's interface to &GAP;, which is written in C. This handles the interface
+  between &GAP; and the third part, which is the C++ code which calls functions
+  in the LinBox library.
+  <P/>
+  In the C++ part of the kernel module, the &GAP; objects such as vectors, 
+  matrices and their elements are converted into the corresponding LinBox 
+  data types. The requested LinBox function is then called, and the 
+  result converted back onto &GAP; objects.
+  <P/>
+  Currently, all &GAP; matrices are converted into dense matrices in the 
+  LinBox library. LinBox provides good support for sparse matrices, but at 
+  present there is no standard way in &GAP; to represent sparse matrices. There
+  are plans to overhaul matrix objects in &GAP;, and once sparse matrix
+  objects are provided in &GAP;, these should be converted into LinBox sparse
+  matrices.
+  <P/>
+  For more details of the implementation, please refer to the source code
+  documentation. The C and C++ source code can be found in the <F>src</F> 
+  directory of the &linboxing; package, and contains comments which can be 
+  converted into HTML documentation using <F>doxygen</F> (which
+  must therefore be available on your system). Create this documentation using 
+  the following command:
+  <Listing>
+    cd src
+    doxygen Doxyfile
+  </Listing>
+  Point your web browser at <F>src/html/index.html</F> to browse the 
+  documentation.
+
+</Chapter>
+  

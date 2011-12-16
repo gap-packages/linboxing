@@ -1,0 +1,99 @@
+  
+  [1X3 Function Reference[0X
+  
+  
+  [1X3.1 Replacements for [5XGAP[1X functions[0X
+  
+  [1X3.1-1 LinBox.Determinant[0m
+  
+  [2X> LinBox.Determinant( [0X[3XM[0X[2X ) __________________________________________[0Xfunction
+  [2X> LinBox.DeterminantMat( [0X[3XM[0X[2X ) _______________________________________[0Xfunction
+  [2X> LinBox.DeterminantIntMat( [0X[3XM[0X[2X ) ____________________________________[0Xfunction
+  
+  Returns  the  determinant  of  the square matrix [3XM[0m. The entries of [3XM[0m must be
+  integers or over a prime field.
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4Xgap> LinBox.DeterminantMat([[1,2,3],[4,5,6],[7,8,9]]);[0X
+    [4X0[0X
+  [4X------------------------------------------------------------------[0X
+  
+  [1X3.1-2 LinBox.Rank[0m
+  
+  [2X> LinBox.Rank( [0X[3XM[0X[2X ) _________________________________________________[0Xfunction
+  [2X> LinBox.RankMat( [0X[3XM[0X[2X ) ______________________________________________[0Xfunction
+  
+  Returns the maximal number of linearly-independent rows of the matrix [3XM[0m. The
+  entries of [3XM[0m must be integers or over a prime field.
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4Xgap> LinBox.RankMat([[1,2,3],[4,5,6],[7,8,9]]);[0X
+    [4X2[0X
+  [4X------------------------------------------------------------------[0X
+  
+  [1X3.1-3 LinBox.Trace[0m
+  
+  [2X> LinBox.Trace( [0X[3XM[0X[2X ) ________________________________________________[0Xfunction
+  [2X> LinBox.TraceMat( [0X[3XM[0X[2X ) _____________________________________________[0Xfunction
+  
+  For  a square matrix [3XM[0m, returns the sum of the diagonal entries. The entries
+  of  [3XM[0m must be integers or over a prime field. Note that this version (unlike
+  the others in this package) is typically slower than the [5XGAP[0m equivalent, but
+  is provided for completeness.
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4Xgap> LinBox.TraceMat([[1,2,3],[4,5,6],[7,8,9]]);[0X
+    [4X15[0X
+  [4X------------------------------------------------------------------[0X
+  
+  [1X3.1-4 LinBox.SolutionMat[0m
+  
+  [2X> LinBox.SolutionMat( [0X[3XM, b[0X[2X ) _______________________________________[0Xfunction
+  
+  Returns  a  row vector [3Xx[0m that is a solution of the equation xM=b, or [9Xfail[0m if
+  no  solution  exists.  If  the  system is consistent, a random solution [3Xx[0m is
+  returned.  The  entries  of [3XM[0m must be integers or over a prime field, but if
+  they are integers then the solution may include rationals.
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4Xgap> LinBox.SolutionMat([[1,2,3],[4,5,6],[7,8,9]], [2,1,0]);[0X
+    [4X[ -1, -1, 1 ][0X
+    [4Xgap> LinBox.SolutionMat([[1,2,3],[4,5,6],[7,8,9]], [2,1,0]);[0X
+    [4X[ -5/4, -1/2, 3/4 ][0X
+  [4X------------------------------------------------------------------[0X
+  
+  
+  [1X3.2 Miscellaneous functions[0X
+  
+  [1X3.2-1 LinBox.SetMessages[0m
+  
+  [2X> LinBox.SetMessages( [0X[3Xon[0X[2X ) _________________________________________[0Xfunction
+  
+  Turns  on or off the printing of the LinBox library commentator messages. If
+  the  boolean  argument [3Xon[0m is set to [9Xtrue[0m then messages will be printed, else
+  no messages will be displayed.
+  
+  [1X3.2-2 MakeLinboxingDoc[0m
+  
+  [2X> MakeLinboxingDoc( [0X[3X[make-internal][0X[2X ) ______________________________[0Xfunction
+  
+  Builds  this  documentation  from  the  [5Xlinboxing[0m package source files. This
+  should  not  normally  need  doing:  the  current documentation is built and
+  included with the package release.
+  
+  If  the  optional  boolean  argument [3Xmake-internal[0m is [9Xtrue[0m then the internal
+  (undocumented!) functions are included in this manual.
+  
+  [1X3.2-3 TestLinboxing[0m
+  
+  [2X> TestLinboxing( [0X[3X[num-tests][0X[2X ) _____________________________________[0Xfunction
+  
+  Test  the  installation  of  [5Xlinboxing[0m and print profiling information. This
+  tries  all  the  [5Xlinboxing[0m  package's  algorithms  with  random  vectors and
+  matrices  over  random  fields  (covering  all  the distinct supported field
+  types).  The results are compared with the equivalent [5XGAP[0m functions, and the
+  relative times displayed.
+  
+  The  optional  argument [3Xnum-tests[0m specifies how many times to run each test:
+  the default is 5 times.
+  

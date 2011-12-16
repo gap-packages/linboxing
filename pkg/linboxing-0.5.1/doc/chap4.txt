@@ -1,0 +1,35 @@
+  
+  [1X4 Implementation[0X
+  
+  The  [5Xlinboxing[0m  package  consists  three parts. The first part is written in
+  [5XGAP[0m,  and  this  consists of test routines and wrappers for functions in the
+  [5Xlinboxing[0m kernel module. The second part is the kernel module's interface to
+  [5XGAP[0m,  which  is written in C. This handles the interface between [5XGAP[0m and the
+  third  part,  which  is  the  C++  code  which calls functions in the LinBox
+  library.
+  
+  In  the  C++  part  of  the  kernel module, the [5XGAP[0m objects such as vectors,
+  matrices and their elements are converted into the corresponding LinBox data
+  types.  The  requested  LinBox  function  is  then  called,  and  the result
+  converted back onto [5XGAP[0m objects.
+  
+  Currently,  all [5XGAP[0m matrices are converted into dense matrices in the LinBox
+  library.  LinBox  provides  good support for sparse matrices, but at present
+  there  is  no  standard  way  in [5XGAP[0m to represent sparse matrices. There are
+  plans  to overhaul matrix objects in [5XGAP[0m, and once sparse matrix objects are
+  provided in [5XGAP[0m, these should be converted into LinBox sparse matrices.
+  
+  For  more  details  of  the  implementation, please refer to the source code
+  documentation.  The  C and C++ source code can be found in the [11Xsrc[0m directory
+  of  the [5Xlinboxing[0m package, and contains comments which can be converted into
+  HTML  documentation using [11Xdoxygen[0m (which must therefore be available on your
+  system). Create this documentation using the following command:
+  
+  [4X------------------------------------------------------------------[0X
+    [4X    cd src[0X
+    [4X    doxygen Doxyfile[0X
+    [4X  [0X
+  [4X------------------------------------------------------------------[0X
+  
+  Point your web browser at [11Xsrc/html/index.html[0m to browse the documentation.
+  
