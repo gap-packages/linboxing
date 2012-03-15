@@ -33,6 +33,8 @@ AC_DEFUN([AC_FIND_LINBOX],
   AC_LANG_PUSH(C++)
   
   AC_REQUIRE([AC_FIND_GMP])
+  AC_REQUIRE([LB_CHECK_BLAS])
+  AC_REQUIRE([LB_CHECK_GIVARO])
   
   #
   #Allow the user to specify the location of LinBox
@@ -44,9 +46,9 @@ AC_DEFUN([AC_FIND_LINBOX],
   OLD_LIBS=$LIBS
   OLD_LDFLAGS=$LDFLAGS
   OLD_CPPFLAGS=$CPPFLAGS
-  CPPFLAGS=$GMP_CPPFLAGS
+  CPPFLAGS="$CBLAS_FLAG $GIVARO_CFLAGS $GMP_CPPFLAGS"
   LDFLAGS=$GMP_LDFLAGS
-  LIBS=$GMP_LIBS
+  LIBS="$BLAS_LIBS $GIVARO_LIBS $GMP_LIBS"
 
   # If the user has provided a linbox directory, check that location
   if test -n "$LINBOXDIR"; then
@@ -55,7 +57,8 @@ AC_DEFUN([AC_FIND_LINBOX],
     LINBOXLIBDIR=$LINBOXDIR/lib
     if test -r "$LINBOXLIBDIR/liblinbox.la"; then
       LINBOX_CPPFLAGS="-I${LINBOXDIR}/include"
-      LDFLAGS="$LDFLAGS -L${LINBOXDIR}/lib"
+      LINBOX_LDFLAGS="-L${LINBOXDIR}/lib"
+      LDFLAGS="$LDFLAGS $LINBOX_LDFLAGS"
       CPPFLAGS="$CPPFLAGS $LINBOX_CPPFLAGS"
     else
       echo ""
@@ -103,10 +106,12 @@ AC_DEFUN([AC_FIND_LINBOX],
       echo ""
       AC_MSG_ERROR([Cannot find the LinBox library.])
     fi
+
+    LINBOX_LDFLAGS="-R${LINBOXLIBDIR}"
   fi
     
   #Now check that it all works OK
-  AC_CHECK_LIB(linbox, main, [LINBOX_LIBS="${LINBOXLIBDIR}/liblinbox.la"],
+  AC_CHECK_LIB(linbox, main, [LINBOX_LIBS="-llinbox"],
     [
       echo ""
       echo "********************************************************************"
@@ -138,6 +143,7 @@ AC_DEFUN([AC_FIND_LINBOX],
 
   AC_SUBST(LINBOX_CPPFLAGS)
   AC_SUBST(LINBOX_LIBS)
+  AC_SUBST(LINBOX_LDFLAGS)
   
   LIBS=$OLD_LIBS
   LDFLAGS=$OLD_LDFLAGS

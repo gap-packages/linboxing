@@ -4,8 +4,9 @@
   Paul Smith
 
   Copyright (C)  2007-2008
-  Paul Smith
   National University of Ireland Galway
+  Copyright (C)  2011
+  University of St Andrews
 
   This file is part of the linboxing GAP package. 
  
@@ -22,8 +23,6 @@
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: linboxing.c 90 2008-01-29 15:10:15Z pas $
-
 *****************************************************************************/
 
 
@@ -72,7 +71,10 @@ An introduction to the GAP-LinBox mappings can be found
 //////////////////////////////////////////////////////////////////////////////
 
 #include <string.h>
-  
+
+#ifdef CONFIG_H
+  #include <config.h>  /* Include GAP's config.h if we could find it */
+#endif
 #include <src/compiled.h>
 
 #include "linboxing.h"

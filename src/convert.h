@@ -4,8 +4,9 @@
   Paul Smith
 
   Copyright (C)  2007-2008
-  Paul Smith
   National University of Ireland Galway
+  Copyright (C)  2011
+  University of St Andrews
 
   This file is part of the linboxing GAP package. 
  
@@ -28,6 +29,7 @@
 
 #ifndef LINBOXING_CONVERT_H
 #define LINBOXING_CONVERT_H
+#include "config-linboxing.h"
 
 #include <exception>
 #include <vector>
@@ -42,6 +44,9 @@
 
 extern "C"
 {
+#ifdef CONFIG_H // Include GAP's config.h if we could find it
+  #include <config.h>
+#endif
 #include <src/system.h>
 #include <src/objects.h>
 #include <src/gasman.h>
@@ -184,7 +189,11 @@ class GAPLinBoxException : public std::exception
 
 /// The %LinBox type that we use for finite fields is typedefed in case we 
 /// later want to change it
+#ifndef LINBOX_VERSION_1_2
 typedef LinBox::Modular<LinBox::uint32> LBFiniteField;
+#else 
+typedef LinBox::Modular<uint32_t> LBFiniteField;
+#endif
 
 /// The %LinBox type that we use for integers is typedefed in case we 
 /// later want to change it

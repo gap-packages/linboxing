@@ -5,8 +5,9 @@
 ##  Paul Smith
 ##
 ##  Copyright (C)  2007-2008
-##  Paul Smith
 ##  National University of Ireland Galway
+##  Copyright (C)  2011
+##  University of St Andrews
 ##
 ##  This file is part of the linboxing GAP package.
 ## 
@@ -23,8 +24,6 @@
 ##  You should have received a copy of the GNU General Public License along 
 ##  with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## 
-##  $Id: linboxing.gi 98 2008-02-01 10:27:51Z pas $
-##
 #############################################################################
 
 #####################################################################
@@ -68,7 +67,7 @@ InstallGlobalFunction(MakeLinboxingDoc,
     "../lib/linboxing.gi", 
     "../lib/solutions.gi",
     "../lib/tests.gi",
-    ], "linboxing", "../../../../gap4r4");
+    ], "linboxing", "../..");
 end);
 #####################################################################
 
@@ -86,11 +85,10 @@ if IsBound(LinBox) then
 ##  kernel module to use. if the field is not compatible, then an error is 
 ##  thrown.
 ##  <P/>
-##  The field data is a plain record with three elements: <C>.field</C> is 
-##  the field of the matrix (using <Ref Func="DefaultFieldOfMatrix" BookName="Ref"/>);
-##  <C>id</C> is the field id read by the kernel module, which is zero for an 
-##  integer (or rationals) matrix, or the fieldsize 
-##  otherwise; the last element <C>one</C> is the one of the field.
+##  The field data is a plain list with three elements: first the field of the 
+##  matrix (using <Ref Func="DefaultFieldOfMatrix" BookName="Ref"/>); second
+##  the field id, which is zero for an integer (or rationals) matrix, or the 
+##  fieldsize otherwise; and finally the one of the field.
 ##  <P/>
 ##  If the matrix is over the integers or the rationals, then zero is returned.
 ##  It is assumed that the matrix is over the integers (since we can't cope
@@ -105,11 +103,11 @@ LinBox.FIELD_DATA := function(M)
   
   f := DefaultFieldOfMatrix(M);
   if f = Rationals then
-    return rec(field := Integers, id := 0, one := 1);
+    return [Integers, 0, 1];
   elif IsPrimeField(f) then
     size := Size(f);
     if IsSmallIntRep(size) then
-      return rec(field := f, id := size, one := One(f));
+      return [f, size, One(f)];
     else
       s := Concatenation("the linboxing package only supports finite fields of order up to ", String(LinBox.MAX_GAP_SMALL_INT()));
       Error(s);

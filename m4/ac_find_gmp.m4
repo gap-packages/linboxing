@@ -20,7 +20,7 @@
 #   You should have received a copy of the GNU General Public License along with 
 #   this program.  If not, see <http://www.gnu.org/licenses/>.
 #  
-#   $Id: ac_find_gmp.m4 93 2008-01-31 14:07:52Z pas $
+#   $Id: ac_find_gmp.m4 104 2008-04-23 16:28:53Z pas $
 
 ################################################################################
 # Checks GMP and sets GMP_LDFLAGS, GMP_LIBS and GMP_CPPFLAGS accordingly. 

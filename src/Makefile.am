@@ -3,8 +3,9 @@
 #   Paul Smith
 # 
 #   Copyright (C)  2007-2008
-#   Paul Smith
 #   National University of Ireland Galway
+#   Copyright (C)  2011
+#   University of St Andrews
 # 
 #   This file is part of the linboxing GAP package. 
 #  
@@ -21,19 +22,17 @@
 #   You should have received a copy of the GNU General Public License along with 
 #   this program.  If not, see <http://www.gnu.org/licenses/>.
 #  
-#   $Id: Makefile.am 95 2008-01-31 15:36:50Z pas $
-
 
 
 BINARCHDIR = bin/$(GAPARCH)
 GAPINSTALLLIB = $(abs_top_srcdir)/$(BINARCHDIR)/linboxing.so
 
 lib_LTLIBRARIES = linboxing.la
-     
+
 linboxing_la_SOURCES = linboxing.c linboxing.h linboxfuncs.cc convert.h runfunc.h 
 linboxing_la_LDFLAGS = -module -avoid-version $(GMP_LDFLAGS) $(LINBOX_LDFLAGS)
 #linbox_la_LIBADD = $(LAPACK_LIBS) $(BLAS_LIBS) $(FCLIBS)
-linboxing_la_LIBADD = $(LINBOX_LIBS) $(LAPACK_LIBS) $(BLAS_LIBS) $(GMP_LIBS)
+linboxing_la_LIBADD = $(LINBOX_LIBS) $(GIVARO_LIBS) $(BLAS_LIBS) $(GMP_LIBS)
 linboxing_la_CPPFLAGS = $(GAP_CPPFLAGS) $(LINBOX_CPPFLAGS) $(GMP_CPPFLAGS) 
 
 EXTRA_DIST = \
@@ -51,36 +50,33 @@ all-local:
 	@echo ""
 	@echo "  SUCCESS!"
 	@echo ""
-	@echo "  The linboxing kernel module has been successfully built and installed"
-	@echo "  in $(GAPINSTALLLIB)"
-	@echo ""
-	@echo "  To use the linboxing package in GAP, please load it using"
-	@echo ""
-	@echo "   gap> LoadPackage(\"linboxing\");"
+	@echo "The linboxing kernel module has been successfully built and installed"
+	@echo "in $(GAPINSTALLLIB)"
 	@echo ""
 	@echo ""
-	@echo "  The linboxing package will probably conflict with GAP's memory. To"
-	@echo "  avoid conflict you should either run GAP with the -a switch, for"
-	@echo "  example"
+	@echo "The linboxing package will probably conflict with GAP's memory. To"
+	@echo "avoid conflict you should either run GAP with the -a switch, for"
+	@echo "example"
 	@echo ""
-	@echo "   gap -a 100M"
+	@echo "gap -a 100M"
 	@echo ""
-	@echo "  or with the -m switch, for example"
+	@echo "or with the -m switch, for example"
 	@echo ""
-	@echo "   gap -m 256M"
+	@echo "gap -m 256M"
 	@echo ""
-	@echo "  For more details about these switches, see the package documentation" 
-	@echo "  in the doc/ directory, or via the GAP help system. The relevant by" 
-	@echo "  section can be found by loading GAP and typing"
+	@echo "For more details about these switches, see the package documentation" 
+	@echo "in the doc/ directory, or via the GAP help system. The relevant by" 
+	@echo "section can be found by loading GAP and typing"
 	@echo ""
-	@echo "    gap> ?linboxing:Starting GAP"
+	@echo "gap> ?linboxing:Starting GAP"
 	@echo ""
 	@echo ""
-	@echo "  IMPORTANT:"
-	@echo "  Before using the linboxing package for any calculations, you should"
-	@echo "  test the correct operation of the package by running GAP and typing"
+	@echo "IMPORTANT:"
+	@echo "Before using the linboxing package for any calculations, you should"
+	@echo "test the correct operation of the package by running GAP and typing"
 	@echo ""
-	@echo "    TestLinboxing()"
+	@echo "gap> LoadPackage(\"linboxing\");"
+	@echo "gap> TestLinboxing();"
 	@echo ""
 	@echo "***********************************************************************"
 	
@@ -89,4 +85,4 @@ all-local:
 # and removes it from the bin directory
 clean-local: 
 	@$(MAKE) $(AM_MAKEFLAGS) uninstall-libLTLIBRARIES
-	rm -f $(top_srcdir)/$(BINARCHDIR)/linbox.so
+	rm -f $(GAPINSTALLLIB)

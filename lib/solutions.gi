@@ -5,8 +5,9 @@
 ##  Paul Smith
 ##
 ##  Copyright (C)  2007-2008
-##  Paul Smith
 ##  National University of Ireland Galway
+##  Copyright (C)  2011
+##  University of St Andrews
 ##
 ##  This file is part of the linboxing GAP package.
 ## 
@@ -23,8 +24,6 @@
 ##  You should have received a copy of the GNU General Public License along 
 ##  with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## 
-##  $Id: solutions.gi 99 2008-04-22 11:54:32Z pas $
-##
 #############################################################################
 
 if IsBound(LinBox) then
@@ -216,12 +215,12 @@ LinBox.SolutionMat := function(M, b)
   if Length(M[1]) = 1 then
     return SolutionMat(M,b);
   fi;
-    
+
   fielddataMat := LinBox.FIELD_DATA(M);
   fielddataVect := LinBox.FIELD_DATA([b]);
-  
-  if Characteristic(fielddataMat.field) = Characteristic(fielddataVect.field) then
-    if fielddataMat.id > fielddataVect.id then 
+
+  if Characteristic(fielddataMat[1]) = Characteristic(fielddataVect[1]) then
+    if fielddataMat[2] > fielddataVect[2] then 
       return LinBox.SOLVE(M, b, fielddataMat);
     else
       return LinBox.SOLVE(M, b, fielddataVect);
@@ -232,10 +231,14 @@ LinBox.SolutionMat := function(M, b)
   
 end;
 #####################################################################
+LinBox.SolutionIntMat := function(M, b)
+  return LinBox.SolutionMat(M, b);
+end;
+#####################################################################
 
 
 else
-  Info(InfoWarning, 1, "linboxing: the kernel module has not been successfully loaded.");
-  Info(InfoWarning, 1, "No LinBox.<func> functions will be available");
+#  Info(InfoWarning, 1, "linboxing: the kernel module has not been successfully loaded.");
+#  Info(InfoWarning, 1, "No LinBox.<func> functions will be available");
 fi; # if IsBound(LinBox) then
  

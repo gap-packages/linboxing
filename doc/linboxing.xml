@@ -22,7 +22,7 @@
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
   
-  $Id: linboxing.xml 99 2008-04-22 11:54:32Z pas $
+  $Id: linboxing.xml 104 2008-04-23 16:28:53Z pas $
 -->
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -45,20 +45,22 @@
   <Author>
     Paul Smith<Br/>
     <Address>
-      Department of Mathematics,<Br/>
-      National University of Ireland, Galway<Br/>
-      Galway,<Br/>
-      Ireland.
+      School of Computer Science,<Br/>
+      University of St Andrews<Br/>
+      St Andrews,<Br/>
+      UK.
     </Address>
-    <Email>paul.smith@nuigalway.ie</Email> 
-    <Homepage>http://www.maths.nuigalway.ie/~pas</Homepage>
+    <Email>paul.smith@st-andrews.ac.uk</Email> 
+    <Homepage>http://www.cs.st-andrews.ac.uk/~pas</Homepage>
   </Author>
-  <Date>23 April 2008</Date> 
+  <Date>9 June 2011</Date> 
 
   <Copyright> 
     <!-- OPTIONAL -->
     &copyright; 2007-2008
-    Paul Smith, National University of Ireland, Galway
+    National University of Ireland, Galway
+    &copyright; 2011
+    University of St Andrews, UK
     <P/>
     The &linboxing; package is released under the GNU General Public 
     License (GPL). This file is part of the &linboxing; package, though as 

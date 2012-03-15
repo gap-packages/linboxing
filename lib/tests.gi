@@ -151,7 +151,7 @@ InstallGlobalFunction(TestLinboxing,
     else
       NumTests := 5;
     fi;  
-    LinBox.SetMessages(false);
+    #LinBox.SetMessages(false);
 
     failed := [];
     passed := [];
@@ -173,9 +173,7 @@ InstallGlobalFunction(TestLinboxing,
     ## return a random prime field of size less than 256
     RANDOM_SMALL_FIELD := function()
       local p;
-      repeat
-        p := NextPrimeInt(Random([2..251]));
-      until p < 256;
+      p := NextPrimeInt(Random([1..250]));
       return GF(p);
     end;
     ###################################################
@@ -184,9 +182,7 @@ InstallGlobalFunction(TestLinboxing,
     ## return a random prime field of size between 256 and 65536
     RANDOM_LARGE_FIELD := function()
       local p;
-      repeat
-        p := NextPrimeInt(Random([257..65521]));
-      until p < 65536;
+      p := NextPrimeInt(Random([256..65520]));
       return GF(p);
     end;
     ###################################################
@@ -484,7 +480,7 @@ InstallGlobalFunction(TestLinboxing,
       if Random([1..4]) = 1 then
         n := Length(A[1]);
         I := IdentityMat(n, F);
-        I[n][n] := 0;
+        I[n][n] := Zero(F);
         A := A*I;
       fi;
       b := RandomMat(1, Length(A[1]), F)[1];

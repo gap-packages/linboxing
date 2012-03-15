@@ -2,8 +2,9 @@
 #   Paul Smith
 # 
 #   Copyright (C)  2007-2008
-#   Paul Smith
 #   National University of Ireland Galway
+#   Copyright (C)  2011
+#   University of St Andrews
 # 
 #   This file is part of the linboxing GAP package. 
 #  
@@ -20,7 +21,6 @@
 #   You should have received a copy of the GNU General Public License along with 
 #   this program.  If not, see <http://www.gnu.org/licenses/>.
 #  
-#   $Id: ac_find_gap.m4 101 2008-04-22 15:08:20Z pas $
 ################################################################################
 
 # Find the location of GAP
@@ -46,7 +46,7 @@ AC_DEFUN([AC_FIND_GAP],
   AC_ARG_WITH(gaproot, 
     [AC_HELP_STRING([--with-gaproot=<path>], [specify root of GAP installation])],
     [GAPROOT=$withval])
-  DEFAULT_GAPROOTS="../.. /usr/local/lib/gap4r4 /usr/lib/gap4r4"
+  DEFAULT_GAPROOTS="../.. /usr/local/lib/gap4r5 /usr/lib/gap4r5 /usr/local/lib/gap4r4 /usr/lib/gap4r4"
   
   SYSINFO="sysinfo.gap"
   havesysinfo=0
@@ -69,12 +69,12 @@ AC_DEFUN([AC_FIND_GAP],
       fi
     done
   fi
-    
+
   if test "x$havesysinfo" = "x1"; then
     AC_MSG_RESULT([${GAPROOT}])
   else
     AC_MSG_RESULT([Not found])
-    
+
     echo ""
     echo "**********************************************************************"
     echo "  ERROR"
@@ -82,27 +82,56 @@ AC_DEFUN([AC_FIND_GAP],
     echo "  Cannot find your GAP installation. Please specify the location of"
     echo "  GAP's root directory using --with-gaproot=<path>"
     echo ""
-    echo "  The GAP root directory (as far as linboxing is concerned) is the one"
-    echo "  containing the file sysinfo.gap and the subdirectories src/ and "
-    echo "  bin/."
     echo "**********************************************************************"
     echo ""
-    
+
     AC_MSG_ERROR([Unable to find GAP root directory])
   fi
-        
+
   #####################################
-  # Now find the architecture
-        
+  # First check the version
+
   AC_REQUIRE([AC_PROG_GREP])
   AC_REQUIRE([AC_PROG_SED])
-  
-  GAPARCH="Unknown"
 
-  AC_MSG_CHECKING([for GAP architecture])
-  GAPARCH=`${GREP} GAParch ${GAPROOT}/${SYSINFO} | ${SED} 's|^GAParch=\(.*\)|\1|'`
-  AC_MSG_RESULT([${GAPARCH}])
- 
+  GAPVERSION="Unknown"
+
+  AC_MSG_CHECKING([for GAP version])
+  GAPSYSTEM_G="$GAPROOT/lib/system.g"
+  if test -r "$GAPSYSTEM_G"; then
+    GAPVERSION=`${GREP} ' Version *:= *"' ${GAPSYSTEM_G} | ${SED} 's|Version *:= *"\(.*\)",.*|\1|'`
+    AC_MSG_RESULT([${GAPVERSION}])
+
+    AC_MSG_CHECKING([for GAP version >= 4.5])
+    GAP45=no
+    AX_COMPARE_VERSION([$GAPVERSION], [ge], [4.5], [
+      GAP45=yes
+    ], [
+      AX_COMPARE_VERSION([$GAPVERSION], [eq], [4.dev], [GAP45=yes])])
+
+    AC_MSG_RESULT($GAP45)
+
+    if test "x$GAP45" = "xyes"; then
+      AC_DEFINE(GAP_4_5, , "We have GAP version 4.5 (or higher)")
+    fi
+  else
+    AC_MSG_RESULT([Not found])
+
+    echo ""
+    echo "**********************************************************************"
+    echo "  ERROR"
+    echo ""
+    echo "  Found a GAP installation at $GAPROOT"
+    echo "  but could find information about the GAP version in the file"
+    echo "  ${GAPSYSTEM_G}"
+    echo "  This file should be present: please check your GAP installation."
+    echo ""
+    echo "**********************************************************************"
+    echo ""
+
+    AC_MSG_ERROR([Unable to find GAP system.g])
+  fi
+
   if test "x$GAPARCH" = "xUnknown"; then
     echo ""
     echo "**********************************************************************"
@@ -114,23 +143,50 @@ AC_DEFUN([AC_FIND_GAP],
     echo "  This file should be present: please check your GAP installation."
     echo "**********************************************************************"
     echo ""
-    
+
     AC_MSG_ERROR([Unable to find GAParch information.])
-  fi  
-  
-  
+  fi
+
+
+  #####################################
+  # Now find the architecture
+
+
+  GAPARCH="Unknown"
+
+  AC_MSG_CHECKING([for GAP architecture])
+  GAPARCH=`${GREP} GAParch= ${GAPROOT}/${SYSINFO} | ${SED} 's|^GAParch=\(.*\)|\1|'`
+  AC_MSG_RESULT([${GAPARCH}])
+
+  if test "x$GAPARCH" = "xUnknown"; then
+    echo ""
+    echo "**********************************************************************"
+    echo "  ERROR"
+    echo ""
+    echo "  Found a GAP installation at $GAPROOT"
+    echo "  but could find information about GAP's architecture in the file"
+    echo "  ${GAPROOT}/${SYSINFO}"
+    echo "  This file should be present: please check your GAP installation."
+    echo ""
+    echo "**********************************************************************"
+    echo ""
+
+    AC_MSG_ERROR([Unable to find GAParch information.])
+  fi
+
+
   #####################################
   # Now check for the GAP header files
-        
+
   #Remember the input CPPFLAGS
   OLD_CPPFLAGS="$CPPFLAGS"
-  
+
   AC_MSG_CHECKING([for GAP include files])
   CPPFLAGS="$OLD_CPPFLAGS -I$GAPROOT"
-  
+
   AC_COMPILE_IFELSE(
-    [#include "src/compiled.h"
-      Obj Func(Obj Self){return (Obj)0;}], 
+    [AC_LANG_SOURCE([[#include "src/compiled.h" 
+      Obj Func(Obj Self){return (Obj)0;}]])], 
     [a=1])
 
   if test "x$a" = "x1"; then
@@ -138,7 +194,7 @@ AC_DEFUN([AC_FIND_GAP],
     AC_MSG_RESULT([$GAPROOT/src])
   else
     AC_MSG_RESULT([Not found])
-    
+
     echo ""
     echo "**********************************************************************"
     echo "  ERROR"
@@ -155,62 +211,142 @@ AC_DEFUN([AC_FIND_GAP],
     echo "  the correct GAP root using  --with-gaproot=<path>"
     echo "**********************************************************************"
     echo ""
-    
+
     AC_MSG_ERROR([Unable to find GAP include files in /src subdirectory])
   fi
-  
+
   #Reset CPPFLAGS
   CPPFLAGS="$OLD_CPPFLAGS"
 
   
   ######################################
-  # Try to find a GAP config.h
-  # either in GAPROOT/bin or in GAPINCLUDES
-  
-  AC_MSG_CHECKING([for GAP config.h location])
+  # Check for the GAP config.h
+
+  OLD_CPPFLAGS="$CFLAGS"
+
   GAPCONFIGPATH="$GAPROOT/bin/$GAPARCH"
-  if test -r "$GAPCONFIGPATH/config.h"; then
-    GAP_CPPFLAGS="$GAP_CPPFLAGS -DCONFIG_H -I$GAPCONFIGPATH"
-    AC_MSG_RESULT([$GAPCONFIGPATH/config.h])
-  else
+  CPPFLAGS="$CPPFLAGS -I$GAPCONFIGPATH"
+
+  AC_CHECK_HEADERS([config.h], 
+    [
+      GAP_CPPFLAGS="$GAP_CPPFLAGS -DCONFIG_H -I$GAPCONFIGPATH"
+      HAVECONFIGH=true
+    ],
+    [
+      HAVECONFIGH=false
+    ])
+
+  CPPFLAGS="$OLD_CPPFLAGS"
+
+  ######################################
+  # Try to find out whether GAP was compiled as 32-bit or 64-bit
+
+  AC_MSG_CHECKING([sysinfo.gap for 32-bit or 64-bit GAP])
+  # If we are GAP 4.5 or above it will be stored in sysinfo.gap
+  BUILDMODE=`${GREP} GAParch_abi= ${GAPROOT}/${SYSINFO} | ${SED} 's|^GAParch_abi=\(..\)-bit|\1|'`
+
+  if test "x$BUILDMODE" = "x"; then
     AC_MSG_RESULT([not found])
-    AC_CHECK_SIZEOF([void *],4)
-    bits64=""
-    AC_MSG_CHECKING([for 64-bit machine])
-    if test "x${ac_cv_sizeof_void_p}" = "x8"; then
-      GAP_CPPFLAGS="$GAP_CPPFLAGS -DSYS_IS_64_BIT"
-      AC_MSG_RESULT([yes])
-      bits64="a 64-bit machine"
-    else
-      AC_MSG_RESULT([no])
-      bits64="not a 64-bit machine"
+    if test "x$HAVECONFIGH" = "xtrue"; then
+      # otherwise ask config.h (if present) for the size of a void*
+      AC_LANG_PUSH(C)
+      OLD_CPPFLAGS=$CPPFLAGS
+      CPPFLAGS="$OLDCPPFLAGS -I$GAPCONFIGPATH"
+      AC_MSG_CHECKING([config.h for 32-bit or 64-bit GAP])
+      AC_RUN_IFELSE(
+      [
+        AC_LANG_PROGRAM(
+        [[#include <config.h> ]],
+        [[
+          if(SIZEOF_VOID_P == 8) 
+            return 0;
+          else
+            return -1;
+        ]])
+      ], [BUILDMODE=64], 
+      [
+        AC_RUN_IFELSE(
+        [
+          AC_LANG_PROGRAM(
+          [[#include <config.h> ]],
+          [[
+            if(SIZEOF_VOID_P == 4) 
+              return 0;
+            else
+              return -1;
+          ]])
+        ], [BUILDMODE=32])
+      ])
+      AC_LANG_POP(C)
+      CPPFLAGS=$OLD_CPPFLAGS
     fi
-    echo ""
-    echo "----------------------------------------------------------------------"
-    echo "  WARNING"
-    echo ""
-    echo "  Failed to find GAP's config.h file in the expected location"
-    echo "  $GAPCONFIGPATH/config.h"
-    echo "  This is needed to find out what system settings GAP was built with,"
-    echo "  and in particular whether GAP thinks the system is 32- or 64-bit."
-    echo "  As a result, the linboxing configure script has done its own test"
-    echo "  and thinks it is $bits64. You can proceed to build the"
-    echo "  kernel module, but it is important that you use"
-    echo ""
-    echo "  gap> TestLinboxing()"
-    echo ""
-    echo "  to make sure that linboxing and GAP agree about the size of small "
-    echo "  integers."
-    echo ""
-    echo "  To avoid this warning, please check that the GAP root path used (or"
-    echo "  specified by --with-gaproot) points to the location of the full GAP "
-    echo "  directory structure where GAP was built, and that the architecture"
-    echo "  reported in <gaproot>/sysinfo.gap agrees with the subdirectory of"
-    echo "  <gaproot>/bin" 
-    echo "----------------------------------------------------------------------"
-    echo ""
-  fi;
+
+    if test "x$BUILDMODE" = "x"; then
+      AC_MSG_RESULT([not found])
+      AC_CHECK_SIZEOF([void *],4)
+      bits64=""
+      AC_MSG_CHECKING([for 64-bit machine])
+      if test "x${ac_cv_sizeof_void_p}" = "x8"; then
+        BUILDMODE=64
+        AC_MSG_RESULT([yes])
+        bits64="a 64-bit machine"
+      else
+        AC_MSG_RESULT([no])
+        bits64="not a 64-bit machine"
+      fi
+      echo ""
+      echo "----------------------------------------------------------------------"
+      echo "  WARNING"
+      echo ""
+      echo "  Failed to find work out whether GAP thinks the system is 32- or"
+      echo "  64-bit. As a result, the linboxing configure script has done its"
+      echo "  own test and thinks it is $bits64. You can proceed to build the"
+      echo "  kernel module, but it is important that you use"
+      echo ""
+      echo "  gap> TestLinboxing()"
+      echo ""
+      echo "  to make sure that linboxing and GAP agree about the size of small "
+      echo "  integers."
+      echo ""
+      echo "  To avoid this warning, please check your GAP installation, and"
+      echo "  that the architecture reported in <gaproot>/sysinfo.gap agrees"
+      echo "  with the subdirectory of <gaproot>/bin" 
+      echo "----------------------------------------------------------------------"
+      echo ""
+    else 
+      AC_MSG_RESULT([$BUILDMODE-bit])
+    fi
+  else
+    AC_MSG_RESULT([$BUILDMODE-bit])
+  fi
+
+  if test "x$BUILDMODE" = "x64"; then
+    GAP_CPPFLAGS="$GAP_CPPFLAGS -DSYS_IS_64_BIT -m64"
+    AC_DEFINE(SIZEOF_VOID_P, 8, [The size of `void *' as reported by GAP])
+  elif test "x$BUILDMODE" = "x32"; then
+    AC_DEFINE(SIZEOF_VOID_P, 4, [The size of `void *' as reported by GAP])
+    GAP_CPPFLAGS="$GAP_CPPFLAGS -m32"
+  else
+    AC_MSG_ERROR([Unrecognised BUILDMODE: $BUILDMODE. This is probably an error 
+      in the configure script. Please contact the package maintainer.])
+  fi
+
+  ######################################
+  # Try to find out whether GAP was compiled with GMP
+
+  AC_MSG_CHECKING([whether GAP was built to use GMP])
   
+  # We have to check the Makefile
+  WITHGMP=`${GREP} USE_GMP ${GAPROOT}/Makefile`
+
+  if test "x$WITHGMP" = "x"; then
+    AC_MSG_RESULT([no])
+  else
+    AC_MSG_RESULT([yes])
+    AC_DEFINE(USE_GMP, , [GAP was built with GMP])
+  fi
+
+  AC_SUBST(BUILDMODE)
   AC_SUBST(GAPARCH)
   AC_SUBST(GAPROOT)
   AC_SUBST(GAP_CPPFLAGS)

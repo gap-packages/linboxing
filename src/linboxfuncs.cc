@@ -4,8 +4,9 @@
   Paul Smith
 
   Copyright (C)  2007-2008
-  Paul Smith
   National University of Ireland Galway
+  Copyright (C)  2011
+  University of St Andrews
 
   This file is part of the linboxing GAP package. 
  
@@ -22,8 +23,6 @@
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: linboxfuncs.cc 93 2008-01-31 14:07:52Z pas $
-
 *****************************************************************************/
 
 //////////////////////////////////////////////////////////////////////////////
@@ -61,14 +60,20 @@ can separate this into different source files.
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: linboxfuncs.cc 93 2008-01-31 14:07:52Z pas $
-
 *****************************************************************************/
 
 #include "convert.h"
 
+#ifdef GAP_4_5
+extern "C"
+{
+  #include <src/gmpints.h>
+}
+#endif // GAP_4_5
+
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef GAP_4_5
 
 /// This macro is copied from the GAP source file $GAPROOT/src/integer.c
 /// It returns the number of <tt>TypDigit</tt>s in a long integer.
@@ -78,6 +83,8 @@ can separate this into different source files.
 /// It returns the address of the first digit in a long integer as a 
 /// pointer to a <tt>TypDigit</tt>.
 #define ADDR_INT(op)    ((TypDigit*)ADDR_OBJ(op))
+
+#endif // GAP_4_5
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -128,15 +135,12 @@ LBIntegers::Element LinBox_GAPInt(Obj z)
   else
   {
     // Check it's a GAP large integer
-    // Is it negative
-    bool neg = false;
-    if(TNUM_OBJ(z) == T_INTNEG)
-      neg = true;
-    else if (TNUM_OBJ(z) != T_INTPOS)
+    if(TNUM_OBJ(z) != T_INTNEG && TNUM_OBJ(z) != T_INTPOS)
     {
       throw GAPLinBoxException("Only integers and prime fields are supported. Elements over characteristic zero must be integer.");
     }
-      
+
+#ifndef USE_GMP
     // see $GAPROOT/src/integer.c for details of the format
     // The data type is a C-style array of length SIZE_INT(z)
     // with entries that are digits (of type TypDigit) in a number of base
@@ -149,9 +153,23 @@ LBIntegers::Element LinBox_GAPInt(Obj z)
     {
       e += LBInteger_Int(zp[p]) * pow(base, p);
     }
-    
+
     if(TNUM_OBJ(z) == T_INTNEG)
       e *= -1;
+
+    return e;
+#else 
+    // It is a GMP integer
+    TypLimb* ptr = (TypLimb*)ADDR_INT(z);
+    TypGMPSize size = SIZE_INT(z);
+    LBIntegers::Element::vect_t vec(ptr, ptr+size); 
+    LBIntegers::Element e(vec);
+
+    if(TNUM_OBJ(z) == T_INTNEG)
+      e = Integer::negin(e);
+    
+    return e;
+#endif 
 
 /*
     This orginal version is a little slower
@@ -178,9 +196,8 @@ LBIntegers::Element LinBox_GAPInt(Obj z)
       m = QuoInt(m, GAPmod);
     }
     e += LBIntegers::Element(INT_INTOBJ(m)) * pow(ZZmod, p);
-*/    
-    return e;
-  }   
+*/
+  }
 }
 
 /// Convert a %LinBox finite field element to a GAP integer object.
@@ -243,6 +260,7 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
       *zd++ = TypDigit(0);
     }
 */
+#ifndef USE_GMP
     // Create a GAP (large) integer that is one larger than the biggest
     // small integer
     Obj GAPmod = PowInt(INTOBJ_INT(2), INTOBJ_INT(NR_SMALL_INT_BITS));
@@ -264,6 +282,30 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
     z = SumInt(z, ProdInt(INTOBJ_INT(Int_Element(m)), b));
 
     return z;
+#else
+    Obj z;
+    if(e.sign() < 0) 
+    {
+      z = NewBag(T_INTNEG, length(e));
+    }
+    else
+    {
+      z = NewBag(T_INTPOS, length(e));
+    }
+
+    // Need to cast away the const since Givaro does not provide a 
+    // public const version of get_mpz()
+    LBIntegers::Element& temp_e = const_cast<LBIntegers::Element&>(e);
+    mpz_ptr p_gmpz = temp_e.get_mpz();
+    size_t size = mpz_size(p_gmpz);
+
+    mp_limb_t* p_limbs = ADDR_INT(z);
+    for(int i = 0; i < size; i++)
+      p_limbs[i] = mpz_getlimbn(p_gmpz, i);
+    // Is this necessary?
+    z = GMP_NORMALIZE(z);
+    return z;
+#endif //GAP_4_5
   }   
 }
 
@@ -279,8 +321,9 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
   Paul Smith
 
   Copyright (C)  2007-2008
-  Paul Smith
   National University of Ireland Galway
+  Copyright (C)  2011
+  University of St Andrews
 
   This file is part of the linboxing GAP package. 
  
@@ -297,17 +340,17 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: linboxfuncs.cc 93 2008-01-31 14:07:52Z pas $
-
 *****************************************************************************/
+
+#include <memory>
 
 #include "convert.h"
 #include "runfunc.h"
 
 extern "C" 
 {
-#include <src/bool.h>
-#include <src/ariths.h>
+  #include <src/bool.h>
+  #include <src/ariths.h>
   
   #include "linboxing.h"
 }
@@ -348,7 +391,7 @@ Obj FuncSET_LINBOX_MESSAGES(Obj self, Obj on)
   {
     commentator.setMaxDetailLevel(0);
     commentator.setMaxDepth(0);
-    commentator.setReportStream(std::cerr);
+    commentator.setReportStream(commentator.cnull);
     commentator.setPrintParameters(0, 0, 0);
   }
   return (Obj)0;
@@ -643,8 +686,6 @@ Obj FuncSOLVE(Obj self, Obj A, Obj b, Obj fielddata)
   You should have received a copy of the GNU General Public License along with 
   this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: linboxfuncs.cc 93 2008-01-31 14:07:52Z pas $
-
 *****************************************************************************/
 
 
@@ -676,7 +717,7 @@ class TestIntFunc
     template<typename Field>
     Obj operator()(Obj z, Field& F, Obj one) const
     {
-      throw GAPLinBoxException("TestIntSolution only supports LBIntegers integers");
+      throw GAPLinBoxException("TestIntFunc only supports LBIntegers integers");
     }
     /// The functor's function
     /// @param z The GAP integer 

@@ -37,7 +37,7 @@ extern "C"
 #include <src/precord.h>
 }
 
-
+#include <iostream>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -65,16 +65,16 @@ Obj RunLinBoxFunction(Obj in, Obj fielddata)
   try
   {
     FUNC functor;
-    Int q = INT_INTOBJ(GET_ELM_PREC(fielddata, 2));
+    Int q = INT_INTOBJ(ELM_PLIST(fielddata, 2));
     if(q > 0)
     {
       LBFiniteField F(q);
-      return functor(in, F, GET_ELM_PREC(fielddata, 3));
+      return functor(in, F, ELM_PLIST(fielddata, 3));
     }
     else
     {
       LBIntegers F;
-      return functor(in, F, GET_ELM_PREC(fielddata, 3));
+      return functor(in, F, ELM_PLIST(fielddata, 3));
     }
   }
   catch(GAPLinBoxException& e)
@@ -127,16 +127,16 @@ Obj RunLinBoxFunction(Obj in1, Obj in2, Obj fielddata)
   try
   {
     FUNC functor;
-    Int q = INT_INTOBJ(GET_ELM_PREC(fielddata, 2));
+    Int q = INT_INTOBJ(ELM_PLIST(fielddata, 2));
     if(q > 0)
     {
       LBFiniteField F(q);
-      return functor(in1, in2, F, GET_ELM_PREC(fielddata, 3));
+      return functor(in1, in2, F, ELM_PLIST(fielddata, 3));
     }
     else
     {
       LBIntegers F;
-      return functor(in1, in2, F, GET_ELM_PREC(fielddata, 3));
+      return functor(in1, in2, F, ELM_PLIST(fielddata, 3));
     }
   }
   catch(GAPLinBoxException& e)

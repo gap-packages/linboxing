@@ -1,8 +1,8 @@
 README file for the 'linboxing' GAP4 package
 ============================================
 Paul Smith 
-paul.smith@nuigalway.ie
-23 April 2008
+paul.smith@st-andrews.ac.uk
+9 June 2011
 
 
 1. OVERVIEW
@@ -19,11 +19,16 @@ It is implemented in GAP, C and C++.
 2. BEFORE INSTALLATION
 
 Before installing the linboxing package, you need to have the LinBox C++ 
-library (at least version 1.1.5) installed. LinBox can be downloaded from
+library (version 1.1.6 or 1.1.7) installed. LinBox can be downloaded from
     http://www.linalg.org
-and to build it you will also need to have the GNU Multiprecision (GMP) library 
-and a version of the BLAS linear library installed. Installation instructions 
-are provided on the LinBox website, or with the downloaded archive.
+and to build it you will also need to have the Givaro library (version
+3.2.16 or 3.3.3, depending on the LinBox version) from
+    http://ljk.imag.fr/CASYS/LOGICIELS/givaro/
+You will also need installed versions of the GNU Multiprecision (GMP) library 
+and the BLAS and LAPACK linear algebra libraries. 
+
+Further details of these requirements, are included in chapter 2.1 of the user 
+guide included in the 'doc/userguide' subdirectory of this archive. 
 
 -------------------------------------------------------------------------------
 

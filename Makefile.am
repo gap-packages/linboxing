@@ -3,8 +3,9 @@
 #   Paul Smith
 # 
 #   Copyright (C)  2007-2008
-#   Paul Smith
 #   National University of Ireland Galway
+#   Copyright (C)  2011
+#   University of St Andrews
 # 
 #   This file is part of the linboxing GAP package. 
 #  
@@ -20,8 +21,6 @@
 #  
 #   You should have received a copy of the GNU General Public License along with 
 #   this program.  If not, see <http://www.gnu.org/licenses/>.
-#  
-#   $Id: Makefile.am 99 2008-04-22 11:54:32Z pas $
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -35,10 +34,12 @@ EXTRA_DIST = \
 	init.g \
 	read.g \
 	test.g \
+	m4/config-blas.h \
 	lib/linboxing.gd \
 	lib/linboxing.gi \
 	lib/solutions.gi \
 	lib/tests.gi \
+	tst/linboxing.tst \
 	doc/manual.pdf \
 	doc/manual.css \
 	doc/manual.six \
@@ -76,8 +77,11 @@ dist-hook:
 	@echo "---------------------------------------------------------------"
 
 # My own dist which sets the directory permissions to 755, not 777
+# and changes the directory name to be simply linboxing
 dist2: distdir
 	-find $(distdir) -type d -perm -777 -exec chmod 755 {} \;
-	tardir=$(distdir) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
+	-mv $(distdir) $(PACKAGE)
+	tardir=$(PACKAGE) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
+	-mv $(PACKAGE) $(distdir) 
 	$(am__remove_distdir)
 	

@@ -5,8 +5,9 @@
 ##  Paul Smith
 ##
 ##  Copyright (C)  2007-2008
-##  Paul Smith
 ##  National University of Ireland Galway
+##  Copyright (C)  2011
+##  University of St Andrews
 ##
 ##  This file is part of the linboxing GAP package.
 ## 
@@ -23,12 +24,11 @@
 ##  You should have received a copy of the GNU General Public License along 
 ##  with this program.  If not, see <http://www.gnu.org/licenses/>.
 ## 
-##  $Id: PackageInfo.g 100 2008-04-22 13:10:18Z pas $
-##
 #############################################################################
 
 ## To do for a new release:
 ##  - update .Version, .Date and .ArchiveURL in this file
+##  - change "dev" to "deposited"
 ##  - update VERSION file to match
 ##  - update version on configure.ac to match
 ##  - update date in linbox.xml file to match
@@ -36,9 +36,12 @@
 ##  - update CHANGES file
 ##  - check the README file
 ##  - build the manual
+##  - update tests if necessary
+##  - run ReadTest("/home/pas/GAP/gap/pkg/linboxing/tst/linboxing.tst");
+##     and tweak GAPstones if need be
+##  - run TestLinboxing();
+##  - build the manual
 ##  - run make dist2   !!!!! NOT DIST !!!!!!!
-##  - update the website with updatewebman.sh and updatewebpkg.sh
-##  - update website
 
 SetPackageInfo( rec(
 
@@ -53,8 +56,8 @@ Subtitle := "access to LinBox linear algebra functions from GAP",
 ##  See '?Extending: Version Numbers' in GAP help for an explanation
 ##  of valid version numbers. For an automatic package distribution update
 ##  you must provide a new version number even after small changes.
-Version := "0.5.1",
-Date := "23/04/2008",
+Version := "0.5.2",
+Date := "19/05/2011",
 
 ##  URL of the archive(s) of the current package release, but *without*
 ##  the format extension(s), like '.zoo', which are given next.
@@ -64,7 +67,7 @@ Date := "23/04/2008",
 ##  directory containing the package (in our "example" probably:
 ##  example/init.g, ...    or  example-1.3/init.g, ...  )
 # 
-ArchiveURL := "http://www.maths.nuigalway.ie/~pas/CHA/linboxing/linboxing-0.5.1",
+ArchiveURL := "http://www.cs.st-andrews.ac.uk/~pas/linboxing/linboxing-0.5.2",
 
 ##  All provided formats as list of file extensions, separated by white
 ##  space or commas.
@@ -144,16 +147,16 @@ Persons := [
     FirstNames    := "Paul",
     IsAuthor      := true,
     IsMaintainer  := true,
-    Email         := "paul.smith@nuigalway.ie",
-    WWWHome       := "http://www.maths.nuigalway.ie/~pas",
+    Email         := "pas1001@cantab.net",
+    WWWHome       := "http://www.cs.st-andrews.ac.uk/~pas",
     PostalAddress := Concatenation( [
                          "Paul Smith\n",
-                         "Mathematics Department\n",
-                         "NUI Galway\n",
-                         "Galway\n",
-                         "Ireland" ] ),
-    Place         := "Galway",
-    Institution   := "National University of Ireland Galway"
+                         "School of Computer Science\n",
+                         "University of St Andrews\n",
+                         "St Andrews\n",
+                         "UK" ] ),
+    Place         := "St Andrews",
+    Institution   := "University of St Andrews"
   ),
 # provide such a record for each author and/or maintainer ...
   
@@ -189,9 +192,9 @@ Status := "deposited",
 ##  and updating of the package in the GAP distribution.
 #
 README_URL := 
-  "http://www.maths.nuigalway.ie/~pas/CHA/linboxing/README.linboxing",
+  "http://www.cs.st-andrews.ac.uk/~pas/linboxing/README.linboxing",
 PackageInfoURL := 
-  "http://www.maths.nuigalway.ie/~pas/CHA/linboxing/PackageInfo.g",
+  "http://www.cs.st-andrews.ac.uk/~pas/linboxing/PackageInfo.g",
 
 ##  Here you  must provide a short abstract explaining the package content 
 ##  in HTML format (used on the package overview Web page) and an URL 
@@ -204,7 +207,7 @@ AbstractHTML :=
   "The <span class=\"pkgname\">linboxing</span> package provides kernel-level \
   access to the exact linear algebra functions from the LinBox C++ library.",
 
-PackageWWWHome := "http://www.maths.nuigalway.ie/~pas/CHA/linboxing/",
+PackageWWWHome := "http://www.cs.st-andrews.ac.uk/~pas/linboxing/",
 
 ##  Here is the information on the help books of the package, used for
 ##  loading into GAP's online help and maybe for an online copy of the 
@@ -261,10 +264,10 @@ Dependencies := rec(
   # insensitive, least version denoted with '>=' prepended to version string.
   # without these, the package will not load
   # NeededOtherPackages := [["GAPDoc", ">= 0.99"]],
-  NeededOtherPackages := [],
+  NeededOtherPackages := [["GAPDoc", "1.0"]],
   # without these the package will issue a warning while loading
   # SuggestedOtherPackages := [],
-  SuggestedOtherPackages := [["GAPDoc", "1.0"]],
+  SuggestedOtherPackages := [],
   # needed external conditions (programs, operating system, ...)  provide 
   # just strings as text or
   # pairs [text, URL] where URL  provides further information
@@ -272,14 +275,15 @@ Dependencies := rec(
   # (no automatic test will be done for this, do this in your 
   # 'AvailabilityTest' function below)
   # ExternalConditions := []
-  ExternalConditions := ["LinBox (http://www.linalg.org/) with version >= 1.1.5"]
+  ExternalConditions := ["LinBox (http://www.linalg.org/) with version >= 1.1.6"]
 ),
 
 ##  Provide a test function for the availability of this package.
-##  For packages which will not fully work, use 'Info(InfoWarning, 1,
-##  ".....")' statements. For packages containing nothing but GAP code,
-##  just say 'ReturnTrue' here.
-##  With the new package loading mechanism (GAP >=4.4)  the availability
+##  For packages which will not fully work,
+##  use 'LogPackageLoadingMessage( PACKAGE_WARNING, ... )' statements,
+##  do not call `Print'.
+##  For packages containing nothing but GAP code, just say 'ReturnTrue' here.
+##  With the package loading mechanism of GAP >=4.4, the availability
 ##  tests of other packages, as given under .Dependencies above, will be 
 ##  done automatically and need not be included in this function.
 #AvailabilityTest := ReturnTrue,
@@ -288,8 +292,16 @@ AvailabilityTest := function()
     # test for existence of the compiled binary
     path := DirectoriesPackagePrograms("linboxing");
     if not "linboxing" in SHOW_STAT() and Filename(path, "linboxing.so") = fail then
-      Info(InfoWarning, 1, "linboxing: compiled kernel module not present.");
-      Info(InfoWarning, 1, "No LinBox.<func> functions will be available.");
+      # Use LogPackageLoadingMessage if available (i.e. GAP4.5)
+      # But need to call it in this round-about way so that we don't get
+      # errors in GAP 4.4. PACKAGE_ERROR=1
+      if IsBoundGlobal( "LogPackageLoadingMessage" ) then
+        CallFuncList( ValueGlobal( "LogPackageLoadingMessage" ), [ 1,
+          ["The compiled linboxing kernel module is not present."]]);
+      else
+        Info(InfoWarning, 1, "linboxing: compiled kernel module not present.");
+      fi;
+      return false;
     fi;
     return true;
   end,
@@ -325,7 +337,7 @@ Autoload := false,
 ##  the file contains the string 'gap> START_TEST('.
 ##  For submitted packages, these tests are run regularly, as a part of the
 ##  standard GAP test suite.
-#TestFile := "tst/testall.g",
+TestFile := "tst/linboxing.tst",
 
 ##  *Optional*: Here you can list some keyword related to the topic 
 ##  of the package.
