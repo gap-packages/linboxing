@@ -1,0 +1,61 @@
+TODO
+====
+
+Matrix/vector methods
+=========
+
+In GAP 4.5 we now have matrix objcets and vector objects, which allows proper 
+method selection. There are two ways in which we can take advantage of this
+to make the package much more useful, representing two different levels of 
+difficultness:
+
+1) Install methods for Rank, Determinant etc for existing datatypes (e.g. 
+RowList matrices) at a higher priority than the existing ones. These do some 
+test to check whether the matrix is not a trivial size and then either call the 
+corresponding Linbox.<func> function or call NextMethod. The size should be 
+user-configurable (via some LinBox global variables) with (ideally) default 
+values set by an automatic test routine on installation (as with the cvec 
+package). Using this approach, users can write their code without LinBox in mind
+and (as long as they use matrix/vector objects not lists of lists) they can
+benefit from linboxing if it is loaded.
+
+2) Use LinBox matrices as a native representation in GAP (and possibly more 
+than one representation e.g. dense vs sparse). Assign these their own TNUM and 
+store them only as LinBox C++ datatypes. Then method selection is easy - LinBox
+routines use LinBox matrices. There is a question here of how matrices get into
+the LinBox representation: we don't want to force users to us LinBox, but we 
+also don't want to encourage automatic conversion of representations. Some
+more thought is required here.
+
+
+Other LinBox functions
+=========
+
+- Standard arithmetic operations (e.g. multiplication) on matrices
+
+- Extension fields q = p^e 
+- Smith Normal form
+- Characteristic Polynomial 
+- Minimal Polynomial
+
+
+Internals
+=========
+
+- Functors should specify their preferred field types, and all conversions
+(i.e. int, vectors, matrices) should be templated on those.
+
+
+LinBox
+=========
+
+- Support version 1.2 (possibly deprecate support for 1.1.7/1.1.6?)
+- Support the linbox and givaro packages available using apt-get with Ubuntu
+
+Configure and Build
+=========
+
+- Support the GAP 4.5 multi-build setup
+- Support --with-abi for 32-bit builds (will need GMP, Givaro and LinBox to 
+play along!)
+

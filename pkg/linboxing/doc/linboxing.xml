@@ -1,0 +1,112 @@
+<!-- 
+  LINBOXING - linboxing.xml
+  Main documentation file
+  Paul Smith
+
+  Copyright (C)  2007-2008
+  Paul Smith
+  National University of Ireland Galway
+
+  This file is part of the linboxing GAP package. 
+  
+  The linboxing package is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by the 
+  Free Software Foundation; either version 2 of the License, or (at your 
+  option) any later version.
+  
+  The linboxing package is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+  more details.
+  
+  You should have received a copy of the GNU General Public License along with 
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  $Id: linboxing.xml 104 2008-04-23 16:28:53Z pas $
+-->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Book SYSTEM "gapdoc.dtd" [
+  <!ENTITY linboxing "<Package>linboxing</Package>">
+]>
+  
+<Book Name="linboxing">
+
+<TitlePage>
+  <Title>
+    &linboxing;
+  </Title>
+  <Subtitle>
+    Kernel-level access to LinBox exact linear algebra routines
+  </Subtitle>
+
+  <Version>Version <#Include SYSTEM "../VERSION"></Version>
+
+  <Author>
+    Paul Smith<Br/>
+    <Address>
+      School of Computer Science,<Br/>
+      University of St Andrews<Br/>
+      St Andrews,<Br/>
+      UK.
+    </Address>
+    <Email>paul.smith@st-andrews.ac.uk</Email> 
+    <Homepage>http://www.cs.st-andrews.ac.uk/~pas</Homepage>
+  </Author>
+  <Date>9 June 2011</Date> 
+
+  <Copyright> 
+    <!-- OPTIONAL -->
+    &copyright; 2007-2008
+    National University of Ireland, Galway
+    &copyright; 2011
+    University of St Andrews, UK
+    <P/>
+    The &linboxing; package is released under the GNU General Public 
+    License (GPL). This file is part of the &linboxing; package, though as 
+    documentation it is released under the GNU Free Documentation License
+    (see <URL>http://www.gnu.org/licenses/licenses.html#FDL</URL>).
+    <P/>
+    The &linboxing; package is free software; you can redistribute it 
+    and/or modify it under the terms of the GNU General Public License as
+    published by the Free Software Foundation; either version 2 of the 
+    License, or (at your option) any later version.
+    <P/>
+    The &linboxing; package is distributed in the hope that it will be
+    useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+    Public License for more details.
+    <P/>
+    You should have received a copy of the GNU General Public License
+    along with the &linboxing; package; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    <P/>
+    For more details, see 
+    <URL>http://www.fsf.org/licenses/gpl.html</URL>. 
+    <P/>
+  </Copyright> 
+
+  <Acknowledgements> 
+    The &linboxing; package is supported by a Marie Curie Transfer of
+    Knowledge grant based at the Department of Mathematics, NUI Galway
+    (MTKD-CT-2006-042685)
+  </Acknowledgements>
+</TitlePage>
+
+<TableOfContents/>
+
+<Body>
+  
+  
+  <#Include SYSTEM "intro.xml">
+  <#Include SYSTEM "install.xml">
+  <#Include SYSTEM "functions.xml">
+  <#Include SYSTEM "implementation.xml">
+  <#Include SYSTEM "internal.xml">
+
+    
+</Body>
+
+<TheIndex/>
+
+</Book>

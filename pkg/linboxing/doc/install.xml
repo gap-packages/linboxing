@@ -1,0 +1,297 @@
+<!-- 
+  LINBOXING - install.xml
+  Installation documentation section 
+  Paul Smith
+  
+  Copyright (C)  2007-2008
+  National University of Ireland Galway
+  Copyright (C)  2011
+  University of St Andrews
+  
+  This file is part of the linboxing GAP package. 
+  
+  The linboxing package is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by the 
+  Free Software Foundation; either version 2 of the License, or (at your 
+  option) any later version.
+  
+  The linboxing package is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+  more details.
+  
+  You should have received a copy of the GNU General Public License along with 
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  -->
+  
+<!-- ********************************************************** -->
+<Chapter> 
+  <Heading>Installation and Use</Heading>
+  
+  Before you can use the &linboxing; package in &GAP;, there are several things 
+  that you must do. You must install a compatible version of the LinBox library 
+  (Section <Ref Sect="InstallingLinBox"/>), and you must build the &linboxing;
+  package's kernel module (Section <Ref Sect="InstallingPackage"/>). Finally,
+  you will most likely want to run &GAP; with special command-line parameters
+  (Section <Ref Sect="RunningLinBox"/>). This chapter covers all of these 
+  technical details.
+
+  <Section Label="InstallingLinBox">
+    <Heading>Installing the LinBox library</Heading>
+
+    Before you can install the &linboxing; package, you need to have built and 
+    installed the LinBox library on your machine. Versions 1.1.6 or 1.1.7 of
+    LinBox are required to use the &linboxing; package.
+
+    LinBox has its own prerequisites before it can be built. This section walks 
+    you through getting a working installation of LinBox. Full instructions for 
+    building each of these libraries are available on their own websites and 
+    should be referred to if you have any problems or (for example) wish to
+    install the libraries in a non-standard location.
+
+    <Subsection Label="TheBasics">
+      <Heading>Setting up base system</Heading>
+
+      Before you can build LinBox library you will need the standard tools for 
+      building a package from source code, including a C++ compiler such as 
+      <C>g++</C>. Also needed are three standard mathematical libraries: 
+      <List>
+        <Item>the GNU Multiprecision Arithmetic (GMP) Library (see 
+          <URL>http://gmplib.org/</URL>)</Item>
+        <Item>a library which provides the BLAS linear algebra routines (see
+          <URL>http://www.netlib.org/blas/</URL>)</Item>
+        <Item>a library which provides the LAPACK linear algebra routines (see
+          <URL>http://www.netlib.org/lapack/</URL>)</Item>
+      </List>
+      Linux users should find all of these in their standard 
+      package repositories. On Ubuntu, for example type the following to install
+      all of these:
+      <Listing>
+        sudo apt-get install libgmp3c2 libgmp3-dev libblas3gf \
+          libblas-dev liblapack3gf liblapack-dev
+      </Listing>
+      Equivalent packages should be available on other Linux distributions and OSX.
+
+      If you are unsure whether or not you have either the GMP or BLAS libraries
+      installed, the <C>configure</C> scripts for both LinBox and &linboxing; 
+      check for them in the standard locations and will tell you if they can't
+      find them.
+    </Subsection>
+
+    <Subsection Label="InstallGivaro">
+      <Heading>Building and installing Givaro</Heading>
+
+      LinBox uses the Givaro C++ library 
+      (<URL>http://ljk.imag.fr/CASYS/LOGICIELS/givaro/</URL>) for its field 
+      representations, so this needs to be built next. Be aware that particular 
+      versions of LinBox will only compile with particular versions of Givaro. 
+      For LinBox version 1.1.7, we recommend Givaro version 3.3.3 of Givaro 
+      (an alternative pairing would be LinBox 1.1.6, and Givaro 3.2.16). 
+      
+      Download Givaro version 3.3.3 from
+      <URL>http://ljk.imag.fr/CASYS/LOGICIELS/givaro/Downloads/givaro-3.3.3.tar.gz</URL> 
+      then unpack and build it using
+      <Listing>
+        tar -xzf givaro-3.3.3.tar.gz
+        cd givaro-3.3.3/
+        ./configure --with-pic
+        make
+        sudo make install
+      </Listing>
+      The <C>--with-pic</C> configure option is necessary to build a shared 
+      library that the &linboxing; kernel module can use.
+    </Subsection>
+
+    <Subsection Label="BuildingLinBox">
+      <Heading>Building and installing LinBox</Heading>
+
+      We recommend using LinBox version 1.1.7 (released 10 November 2010), but 
+      this package has also been tested on version 1.1.6. It is not yet 
+      compatible with newer versions of LinBox. Full installation instructions 
+      come with the downloaded LinBox source archive, or are available from 
+      <URL>http://www.linalg.org/linbox-html/install-dist.html</URL>. 
+
+      Download the LinBox archive from 
+      <URL>http://www.linalg.org/linbox-1.1.7.tar.gz</URL> and use the following
+      commands to extract and build it:
+      <Listing>
+        tar -xzf linbox-1.1.7.tar.gz
+        cd linbox-1.1.7/
+        ./configure
+        make
+        sudo make install
+      </Listing>
+    </Subsection>
+
+    <Subsection Label="TestingLinBox">
+      <Heading>Testing LinBox</Heading>
+
+      Before building the &linboxing; kernel module, we recommend testing your
+      LinBox installation. To do this type 
+      <Listing>
+        make check
+      </Listing>
+      from within the <F>linbox-1.1.7</F> directory.
+    </Subsection>
+  </Section>
+
+  <Section Label="InstallingPackage">
+    <Heading>Building the &linboxing; kernel module</Heading>
+
+    To install the &linboxing; package, you should first unpack the &linboxing;
+    archive file in a directory in the <F>pkg</F> hierarchy of your version of 
+    &GAP;. For example, for a package with the extension <F>.tar.gz</F>, type
+    <Listing>
+      tar -xzf linboxing-<#Include SYSTEM "../VERSION">.tar.gz
+    </Listing>
+    This will extract all of the files into a directory called 
+    <F>linboxing</F>.
+    <P/>
+    All of the useful functionality of the &linboxing; package is provided 
+    through a compiled &GAP; kernel module that uses the LinBox library 
+    directly. Change to the <F>linboxing</F> directory and build the 
+    kernel module using the commands
+    <Listing>
+      cd linboxing
+      ./configure
+      make
+    </Listing>
+    The <C>configure</C> script runs lots of checks and will search for the 
+    locations of all of the required other packages, such as GMP, BLAS, 
+    Givaro, LinBox and &GAP; itself. If there are any problems, it should report 
+    them, and if not then <C>make</C> should proceed with no errors. Note that 
+    <C>make install</C> is not required for &linboxing;: <C>make</C> does
+    all that is needed.
+    <P/>
+    If the required packages are not in the standard locations, you can
+    tell <C>configure</C> where they are using the following command-line
+    switches:
+    <List>
+      <Mark><C>--with-blas=&lt;lib&gt;</C></Mark>
+      <Item>specify the name of the BLAS library, or the linker flags needed to use it</Item>
+      <Mark><C>--with-gmpprefix=&lt;prefix&gt;</C></Mark>
+      <Item>specify the prefix to which GMP library is installed</Item>
+      <Mark><C>--with-givaro=&lt;lib&gt;</C></Mark>
+      <Item>specify the prefix to which Givaro was installed</Item>
+      <Mark><C>--with-linboxprefix=&lt;prefix&gt;</C></Mark>
+      <Item>specify the prefix to which the LinBox library is installed</Item>
+      <Mark><C>--with-gaproot=&lt;path&gt;</C></Mark>
+      <Item>specify the path to GAP's root directory</Item>
+    </List>
+    For example, you may need  to use these switches in the following common 
+    case. If you do not have root access, you may 
+    have installed the LinBox library in your home directory at 
+    <F>/home/pas/software/</F>. To do this, you will have configured the 
+    LinBox build process using <C>--prefix=/home/pas/software</C> and 
+    when you did <C>make install</C>, it would have copied the LinBox 
+    library and header files into <F>/home/pas/software/include</F> and 
+    <F>/home/pas/software/lib</F> respectively. You now wish to build this 
+    &linboxing; package. To tell it where to find the LinBox library, you 
+    run <C>configure</C> with the same prefix that you gave to LinBox, i.e.
+    <C>--with-linboxprefix=/home/pas/software</C>.
+  </Section>
+  
+  <Section Label="RunningLinBox">
+    <Heading>Starting &GAP; with LinBox-friendly memory management</Heading>
+      
+    &GAP; and the LinBox library use different methods for allocating memory, 
+    and these do not work well together. &GAP; 
+    needs all of its memory to be contiguous, and so needs to have free space
+    at the end of its current allocation if it ever wants to expand its 
+    workspace. The LinBox library allocates its memory using <C>malloc</C>, and 
+    allocates memory wherever it feels like it. Because of this, if you run &GAP;
+    and use the &linboxing; package, then there is a good chance that when &GAP; 
+    needs more memory it will find that some LinBox-allocated memory gets in the 
+    way of it expanding the workspace. In this case, &GAP; will simply exit 
+    (without warning!) with the error <Index>cannot extend the workspace 
+    any more</Index> <C>cannot extend the workspace any more</C>.
+    <P/>
+    There are two current solutions to this problem, both of which require
+    &GAP; to be run with a command-line switch:
+    
+    <List>
+      <Mark>Pre-allocate some <C>malloc</C> memory for LinBox to use</Mark>
+      <Item>
+        The <C>-a</C> command-line option
+        <Ref Sect="Command Line Options" BookName="Ref"/>
+        tells &GAP; to pre-allocate some memory that LinBox should, on most 
+        systems, use in preference to getting in the way of the &GAP; workspace. 
+        If you set this sufficiently large (i.e. larger than the largest amount of 
+        LinBox memory than you are likely to need at one time), then &GAP; 
+        should be able to expand its workspace as much as it likes. For example, to 
+        allocate 50Mb of memory to LinBox (enough for 100,000 small integer 
+        matrix elements), use
+        <Listing>
+          gap -a 50M
+        </Listing>
+      </Item>
+      
+      <Mark>Allocate &GAP; a big enough workspace that it will not need extending</Mark>
+      <Item>
+      The <C>-m</C> command-line option 
+      <Ref Sect="Command Line Options" BookName="Ref"/>
+      tells &GAP; to allocate a set number
+      of bytes for the &GAP; workspace when it starts up. If you set this 
+      sufficiently large then &GAP; will never need to expand its workspace and
+      LinBox can allocate its matrices wherever it likes in the remaining
+      memory. For example, to allocate 256Mb of memory to &GAP;, use
+      <Listing>
+        gap -m 256M
+      </Listing>
+      If you are unsure as to how much memory you might need, refer to 
+      <Ref Sect="Global Memory Information" BookName="Ref"/> for
+      various &GAP; commands to let you see how much memory your &GAP; workspace
+      is using. Running &GAP; with the <C>-g</C> (or <C>-g -g</C>) command-line 
+      switch <Ref Sect="Command Line Options" BookName="Ref"/> can also help you
+      keep track of memory usage.
+      </Item>
+    </List>
+
+    You can use both of these solutions at the same time, which may be a safe
+    `belt and braces' approach. If you intend to regularly use the &linboxing;
+    package, you can add these options to the <F>gap.sh</F> shell script, if 
+    you are using it. Future versions of &GAP; may modify GASMAN storage manager 
+    to allow the happy co-existance of &GAP; memory with <C>malloc</C>, which 
+    would mean that these switches may eventually not be needed.
+
+  </Section>
+  
+  <Section>
+    <Heading>Loading and testing the &linboxing; package</Heading>
+    
+    The &linboxing; package is not loaded by default when &GAP; is started. To
+    load the package, type the following at the &GAP; prompt:
+    <Example>
+      gap> LoadPackage( "linboxing");
+    </Example>
+    If &linboxing; isn't already in memory then it is loaded and the author 
+    information is displayed. If you are a frequent user of the &linboxing; 
+    package, you might consider putting this line in your <F>.gaprc</F> file, or
+    using the <C>PackagesToLoad</C> option in your <F>gap.ini</F> file.
+    <P/>
+    You should test the installation of the &linboxing; package by running the &GAP; 
+    command <Ref Func="TestLinboxing"/>:
+    <Example>
+      gap> TestLinboxing();
+    </Example>
+    A faster and less comprehensive test is provided in a standard &GAP; test 
+    file <F>tst/linboxing.tst</F> which can be accessed using:
+    <Example>
+      gap> d := DirectoriesPackageLibrary("linboxing", "tst");
+      gap> ReadTest(Filename(d, "linboxing.tst"));
+    </Example>
+  </Section>
+  
+  <Section>
+    <Heading>Recompiling this documentation</Heading>
+
+    This documentation is written using the &GAPDoc; package, and should be
+    available in PDF, HTML and text formats. It should not normally be necessary 
+    to rebuild the documentation (if you are reading this!). However, 
+    rebuilding the documentation can be done from within &GAP; when running
+    on a standard UNIX installation by using the &GAP; 
+    command <Ref Func="MakeLinboxingDoc"/>. 
+  </Section>
+</Chapter>
+  

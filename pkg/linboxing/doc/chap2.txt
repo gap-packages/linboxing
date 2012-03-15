@@ -1,0 +1,270 @@
+  
+  [1X2 Installation and Use[0X
+  
+  Before  you  can  use the [5Xlinboxing[0m package in [5XGAP[0m, there are several things
+  that  you  must  do.  You  must  install  a compatible version of the LinBox
+  library  (Section  [14X2.1[0m),  and  you must build the [5Xlinboxing[0m package's kernel
+  module  (Section  [14X2.2[0m).  Finally,  you will most likely want to run [5XGAP[0m with
+  special  command-line  parameters  (Section [14X2.3[0m). This chapter covers all of
+  these technical details.
+  
+  
+  [1X2.1 Installing the LinBox library[0X
+  
+  Before  you  can  install  the [5Xlinboxing[0m package, you need to have built and
+  installed  the  LinBox  library  on your machine. Versions 1.1.6 or 1.1.7 of
+  LinBox  are  required  to  use  the  [5Xlinboxing[0m  package.  LinBox has its own
+  prerequisites before it can be built. This section walks you through getting
+  a  working  installation  of  LinBox. Full instructions for building each of
+  these  libraries  are available on their own websites and should be referred
+  to  if  you have any problems or (for example) wish to install the libraries
+  in a non-standard location.
+  
+  
+  [1X2.1-1 Setting up base system[0X
+  
+  Before  you  can  build  LinBox library you will need the standard tools for
+  building  a  package from source code, including a C++ compiler such as [10Xg++[0m.
+  Also needed are three standard mathematical libraries:
+  
+  --    the    GNU    Multiprecision    Arithmetic    (GMP)    Library    (see
+        [7Xhttp://gmplib.org/[0m)
+  
+  --    a  library  which  provides  the  BLAS  linear  algebra  routines (see
+        [7Xhttp://www.netlib.org/blas/[0m)
+  
+  --    a  library  which  provides  the  LAPACK  linear algebra routines (see
+        [7Xhttp://www.netlib.org/lapack/[0m)
+  
+  Linux users should find all of these in their standard package repositories.
+  On Ubuntu, for example type the following to install all of these:
+  
+  [4X------------------------------------------------------------------[0X
+    [4X        sudo apt-get install libgmp3c2 libgmp3-dev libblas3gf \[0X
+    [4X          libblas-dev liblapack3gf liblapack-dev[0X
+    [4X      [0X
+  [4X------------------------------------------------------------------[0X
+  
+  Equivalent  packages  should  be  available on other Linux distributions and
+  OSX.  If  you  are  unsure  whether  or  not you have either the GMP or BLAS
+  libraries  installed,  the  [10Xconfigure[0m  scripts for both LinBox and [5Xlinboxing[0m
+  check  for  them  in  the standard locations and will tell you if they can't
+  find them.
+  
+  
+  [1X2.1-2 Building and installing Givaro[0X
+  
+  LinBox          uses          the         Givaro         C++         library
+  ([7Xhttp://ljk.imag.fr/CASYS/LOGICIELS/givaro/[0m)  for its field representations,
+  so  this needs to be built next. Be aware that particular versions of LinBox
+  will  only  compile  with  particular versions of Givaro. For LinBox version
+  1.1.7,  we  recommend Givaro version 3.3.3 of Givaro (an alternative pairing
+  would  be  LinBox  1.1.6,  and Givaro 3.2.16). Download Givaro version 3.3.3
+  from [7Xhttp://ljk.imag.fr/CASYS/LOGICIELS/givaro/Downloads/givaro-3.3.3.tar.gz[0m
+  then unpack and build it using
+  
+  [4X------------------------------------------------------------------[0X
+    [4X        tar -xzf givaro-3.3.3.tar.gz[0X
+    [4X        cd givaro-3.3.3/[0X
+    [4X        ./configure --with-pic[0X
+    [4X        make[0X
+    [4X        sudo make install[0X
+    [4X      [0X
+  [4X------------------------------------------------------------------[0X
+  
+  The  [10X--with-pic[0m configure option is necessary to build a shared library that
+  the [5Xlinboxing[0m kernel module can use.
+  
+  
+  [1X2.1-3 Building and installing LinBox[0X
+  
+  We  recommend  using  LinBox  version 1.1.7 (released 10 November 2010), but
+  this package has also been tested on version 1.1.6. It is not yet compatible
+  with  newer versions of LinBox. Full installation instructions come with the
+  downloaded    LinBox    source    archive,    or    are    available    from
+  [7Xhttp://www.linalg.org/linbox-html/install-dist.html[0m.   Download  the  LinBox
+  archive from [7Xhttp://www.linalg.org/linbox-1.1.7.tar.gz[0m and use the following
+  commands to extract and build it:
+  
+  [4X------------------------------------------------------------------[0X
+    [4X        tar -xzf linbox-1.1.7.tar.gz[0X
+    [4X        cd linbox-1.1.7/[0X
+    [4X        ./configure[0X
+    [4X        make[0X
+    [4X        sudo make install[0X
+    [4X      [0X
+  [4X------------------------------------------------------------------[0X
+  
+  
+  [1X2.1-4 Testing LinBox[0X
+  
+  Before  building  the  [5Xlinboxing[0m  kernel  module,  we recommend testing your
+  LinBox installation. To do this type
+  
+  [4X------------------------------------------------------------------[0X
+    [4X        make check[0X
+    [4X      [0X
+  [4X------------------------------------------------------------------[0X
+  
+  from within the [11Xlinbox-1.1.7[0m directory.
+  
+  
+  [1X2.2 Building the [5Xlinboxing[1X kernel module[0X
+  
+  To  install  the  [5Xlinboxing[0m  package,  you should first unpack the [5Xlinboxing[0m
+  archive file in a directory in the [11Xpkg[0m hierarchy of your version of [5XGAP[0m. For
+  example, for a package with the extension [11X.tar.gz[0m, type
+  
+  [4X------------------------------------------------------------------[0X
+    [4X      tar -xzf linboxing-0.5.2.tar.gz[0X
+    [4X    [0X
+  [4X------------------------------------------------------------------[0X
+  
+  This will extract all of the files into a directory called [11Xlinboxing[0m.
+  
+  All of the useful functionality of the [5Xlinboxing[0m package is provided through
+  a  compiled  [5XGAP[0m kernel module that uses the LinBox library directly. Change
+  to the [11Xlinboxing[0m directory and build the kernel module using the commands
+  
+  [4X------------------------------------------------------------------[0X
+    [4X      cd linboxing[0X
+    [4X      ./configure[0X
+    [4X      make[0X
+    [4X    [0X
+  [4X------------------------------------------------------------------[0X
+  
+  The  [10Xconfigure[0m  script runs lots of checks and will search for the locations
+  of all of the required other packages, such as GMP, BLAS, Givaro, LinBox and
+  [5XGAP[0m  itself.  If  there  are any problems, it should report them, and if not
+  then  [10Xmake[0m  should  proceed  with  no  errors. Note that [10Xmake install[0m is not
+  required for [5Xlinboxing[0m: [10Xmake[0m does all that is needed.
+  
+  If  the  required  packages  are not in the standard locations, you can tell
+  [10Xconfigure[0m where they are using the following command-line switches:
+  
+  [8X[10X--with-blas=<lib>[0m[8X[0m
+        specify  the  name  of the BLAS library, or the linker flags needed to
+        use it
+  
+  [8X[10X--with-gmpprefix=<prefix>[0m[8X[0m
+        specify the prefix to which GMP library is installed
+  
+  [8X[10X--with-givaro=<lib>[0m[8X[0m
+        specify the prefix to which Givaro was installed
+  
+  [8X[10X--with-linboxprefix=<prefix>[0m[8X[0m
+        specify the prefix to which the LinBox library is installed
+  
+  [8X[10X--with-gaproot=<path>[0m[8X[0m
+        specify the path to GAP's root directory
+  
+  For  example,  you  may  need  to use these switches in the following common
+  case.  If  you  do  not  have root access, you may have installed the LinBox
+  library  in your home directory at [11X/home/pas/software/[0m. To do this, you will
+  have  configured  the LinBox build process using [10X--prefix=/home/pas/software[0m
+  and  when  you did [10Xmake install[0m, it would have copied the LinBox library and
+  header  files  into  [11X/home/pas/software/include[0m  and  [11X/home/pas/software/lib[0m
+  respectively. You now wish to build this [5Xlinboxing[0m package. To tell it where
+  to  find the LinBox library, you run [10Xconfigure[0m with the same prefix that you
+  gave to LinBox, i.e. [10X--with-linboxprefix=/home/pas/software[0m.
+  
+  
+  [1X2.3 Starting [5XGAP[1X with LinBox-friendly memory management[0X
+  
+  [5XGAP[0m  and the LinBox library use different methods for allocating memory, and
+  these  do  not  work  well  together.  [5XGAP[0m  needs  all  of  its memory to be
+  contiguous,  and  so  needs  to  have  free  space at the end of its current
+  allocation  if  it  ever  wants  to expand its workspace. The LinBox library
+  allocates  its  memory  using [10Xmalloc[0m, and allocates memory wherever it feels
+  like it. Because of this, if you run [5XGAP[0m and use the [5Xlinboxing[0m package, then
+  there  is  a  good  chance that when [5XGAP[0m needs more memory it will find that
+  some  LinBox-allocated memory gets in the way of it expanding the workspace.
+  In  this case, [5XGAP[0m will simply exit (without warning!) with the error [10Xcannot
+  extend the workspace any more[0m.
+  
+  There  are  two current solutions to this problem, both of which require [5XGAP[0m
+  to be run with a command-line switch:
+  
+  [8XPre-allocate some [10Xmalloc[0m[8X memory for LinBox to use[0m
+        The [10X-a[0m command-line option [14X'Reference: Command Line Options'[0m tells [5XGAP[0m
+        to  pre-allocate  some memory that LinBox should, on most systems, use
+        in  preference  to getting in the way of the [5XGAP[0m workspace. If you set
+        this sufficiently large (i.e. larger than the largest amount of LinBox
+        memory  than  you  are likely to need at one time), then [5XGAP[0m should be
+        able  to  expand  its  workspace  as much as it likes. For example, to
+        allocate  50Mb  of  memory to LinBox (enough for 100,000 small integer
+        matrix elements), use
+  
+        [4X------------------------------------------------------------[0X
+          [4X          gap -a 50M[0X
+          [4X        [0X
+        [4X------------------------------------------------------------[0X
+  
+  [8XAllocate [5XGAP[0m[8X a big enough workspace that it will not need extending[0m
+        The [10X-m[0m command-line option [14X'Reference: Command Line Options'[0m tells [5XGAP[0m
+        to allocate a set number of bytes for the [5XGAP[0m workspace when it starts
+        up.  If  you  set  this sufficiently large then [5XGAP[0m will never need to
+        expand  its workspace and LinBox can allocate its matrices wherever it
+        likes  in  the  remaining  memory.  For  example, to allocate 256Mb of
+        memory to [5XGAP[0m, use
+  
+        [4X------------------------------------------------------------[0X
+          [4X        gap -m 256M[0X
+          [4X      [0X
+        [4X------------------------------------------------------------[0X
+  
+        If  you  are  unsure  as  to  how much memory you might need, refer to
+        [14X'Reference: Global Memory Information'[0m for various [5XGAP[0m commands to let
+        you  see how much memory your [5XGAP[0m workspace is using. Running [5XGAP[0m with
+        the  [10X-g[0m  (or  [10X-g  -g[0m)  command-line  switch  [14X'Reference:  Command Line
+        Options'[0m can also help you keep track of memory usage.
+  
+  You  can  use  both of these solutions at the same time, which may be a safe
+  `belt  and  braces'  approach.  If you intend to regularly use the [5Xlinboxing[0m
+  package,  you  can  add these options to the [11Xgap.sh[0m shell script, if you are
+  using  it. Future versions of [5XGAP[0m may modify GASMAN storage manager to allow
+  the  happy  co-existance  of  [5XGAP[0m  memory with [10Xmalloc[0m, which would mean that
+  these switches may eventually not be needed.
+  
+  
+  [1X2.4 Loading and testing the [5Xlinboxing[1X package[0X
+  
+  The  [5Xlinboxing[0m package is not loaded by default when [5XGAP[0m is started. To load
+  the package, type the following at the [5XGAP[0m prompt:
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4X      gap> LoadPackage( "linboxing");[0X
+    [4X    [0X
+  [4X------------------------------------------------------------------[0X
+  
+  If  [5Xlinboxing[0m  isn't  already  in  memory  then  it is loaded and the author
+  information  is  displayed.  If  you  are  a  frequent user of the [5Xlinboxing[0m
+  package,  you might consider putting this line in your [11X.gaprc[0m file, or using
+  the [10XPackagesToLoad[0m option in your [11Xgap.ini[0m file.
+  
+  You should test the installation of the [5Xlinboxing[0m package by running the [5XGAP[0m
+  command [2XTestLinboxing[0m ([14X3.2-3[0m):
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4X      gap> TestLinboxing();[0X
+    [4X    [0X
+  [4X------------------------------------------------------------------[0X
+  
+  A faster and less comprehensive test is provided in a standard [5XGAP[0m test file
+  [11Xtst/linboxing.tst[0m which can be accessed using:
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4X      gap> d := DirectoriesPackageLibrary("linboxing", "tst");[0X
+    [4X      gap> ReadTest(Filename(d, "linboxing.tst"));[0X
+    [4X    [0X
+  [4X------------------------------------------------------------------[0X
+  
+  
+  [1X2.5 Recompiling this documentation[0X
+  
+  This  documentation  is  written  using  the  [5XGAPDoc[0m  package, and should be
+  available in PDF, HTML and text formats. It should not normally be necessary
+  to rebuild the documentation (if you are reading this!). However, rebuilding
+  the  documentation  can  be  done from within [5XGAP[0m when running on a standard
+  UNIX installation by using the [5XGAP[0m command [2XMakeLinboxingDoc[0m ([14X3.2-2[0m).
+  

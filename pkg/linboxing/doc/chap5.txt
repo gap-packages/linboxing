@@ -1,0 +1,118 @@
+  
+  [1X5 Internal Function Reference[0X
+  
+  These  are  functions  that  are used internally in the [5XLinBox[0m package. They
+  should  not  be  needed  by  users  of  the  package,  but  may be useful to
+  developers and are provided for completeness
+  
+  
+  [1X5.1 Kernel Module Functions[0X
+  
+  These functions are implemented directly in C or C++ in the kernel module.
+  
+  [1X5.1-1 LinBox.DETERMINANT[0m
+  
+  [2X> LinBox.DETERMINANT( [0X[3XM, field-id[0X[2X ) ________________________________[0Xfunction
+  
+  Kernel  module  function to calculate the determinant of a matrix. Called by
+  the  wrapper [2XLinBox.DeterminantMat[0m ([14X3.1-1[0m). The [3Xfield-id[0m parameter should be
+  0 for a matrix of integers, or the size of the field if the matrix is over a
+  finite field.
+  
+  [1X5.1-2 LinBox.RANK[0m
+  
+  [2X> LinBox.RANK( [0X[3XM, field-id[0X[2X ) _______________________________________[0Xfunction
+  
+  Kernel  module  function  to  calculate  the rank of a matrix. Called by the
+  wrapper  [2XLinBox.RankMat[0m  ([14X3.1-2[0m).  The  [3Xfield-id[0m parameter should be 0 for a
+  matrix  of integers, or the size of the field if the matrix is over a finite
+  field.
+  
+  [1X5.1-3 LinBox.TRACE[0m
+  
+  [2X> LinBox.TRACE( [0X[3XM, field-id[0X[2X ) ______________________________________[0Xfunction
+  
+  Kernel  module  function to calculate the determinant of a matrix. Called by
+  the  wrapper [2XLinBox.TraceMat[0m ([14X3.1-3[0m). The [3Xfield-id[0m parameter should be 0 for
+  a  matrix  of  integers,  or  the  size of the field if the matrix is over a
+  finite field.
+  
+  [1X5.1-4 LinBox.SOLVE[0m
+  
+  [2X> LinBox.SOLVE( [0X[3XM, b, field-id[0X[2X ) ___________________________________[0Xfunction
+  
+  Kernel  module function to calculate the solution of a matrix. Called by the
+  wrapper  [2XLinBox.SolutionMat[0m ([14X3.1-5[0m). The [3Xfield-id[0m parameter should be 0 when
+  the  matrix  and  vector  contains integers, or the size of the field if the
+  matrix  and vector are over a finite field (which must naturally be the same
+  for both).
+  
+  [1X5.1-5 LinBox.TEST_INT_CONVERSION[0m
+  
+  [2X> LinBox.TEST_INT_CONVERSION( [0X[3Xz[0X[2X ) __________________________________[0Xfunction
+  
+  Tests  the GAP-LinBox and LinBox-GAP integer conversion. Returns the integer
+  [3Xz[0m  (which  may  be large) after it has been converted into LinBox format and
+  then back. There is no check that the argument is an integer.
+  
+  [1X5.1-6 LinBox.TEST_VECTOR_CONVERSION_INTERNAL[0m
+  
+  [2X> LinBox.TEST_VECTOR_CONVERSION_INTERNAL( [0X[3Xv, field-id[0X[2X ) ____________[0Xfunction
+  
+  Tests  the GAP-LinBox and LinBox-GAP vector conversion. Returns the vector [3Xv[0m
+  after  it  has been converted into LinBox format and then back. The [3Xfield-id[0m
+  parameter  should be 0 for a vector of integers, or the size of the field if
+  the   vector   is   over   a  finite  field.  This  function  is  called  by
+  [2XLinBox.TEST_VECTOR_CONVERSION[0m ([14X5.1-10[0m).
+  
+  [1X5.1-7 LinBox.TEST_MATRIX_CONVERSION_INTERNAL[0m
+  
+  [2X> LinBox.TEST_MATRIX_CONVERSION_INTERNAL( [0X[3XM, field-id[0X[2X ) ____________[0Xfunction
+  
+  Tests  the GAP-LinBox and LinBox-GAP matrix conversion. Returns the matrix [3Xv[0m
+  after  it  has been converted into LinBox format and then back. The [3Xfield-id[0m
+  parameter  should be 0 for a matrix of integers, or the size of the field if
+  the   matrix   is   over   a  finite  field.  This  function  is  called  by
+  [2XLinBox.TEST_MATRIX_CONVERSION[0m ([14X5.1-11[0m).
+  
+  [1X5.1-8 LinBox.MAX_GAP_SMALL_INT[0m
+  
+  [2X> LinBox.MAX_GAP_SMALL_INT( [0X[3X[0X[2X ) _____________________________________[0Xfunction
+  
+  Kernel  module  function  which returns the size of the largest integer that
+  the  [5XLinBox[0m  kernel module thinks can be represented as a [5XGAP[0m small integer.
+  This  number  is  different  on  32- or 64-bit machines, but [5XLinBox[0m tries to
+  check with [5XGAP[0m when it compiles to find out which value to use.
+  
+  [4X---------------------------  Example  ----------------------------[0X
+    [4X  gap> z := LinBox.MAX_GAP_SMALL_INT();[0X
+    [4X  1152921504606846975[0X
+    [4X  gap> IsSmallIntRep(z);[0X
+    [4X  true[0X
+    [4X  gap> IsSmallIntRep(z+1);[0X
+    [4X  [0X
+  [4X------------------------------------------------------------------[0X
+  
+  [1X5.1-9 LinBox.FIELD_ID[0m
+  
+  [2X> LinBox.FIELD_ID( [0X[3Xe[0X[2X ) _____________________________________________[0Xfunction
+  
+  Checks that the field of the element [3Xe[0m is one that is accepted by the kernel
+  module,  and  if so returns the field code. This is zero for an interger, or
+  the  fieldsize  otherwise.  If  the  field is not compatible with the kernel
+  module then an error is thrown.
+  
+  [1X5.1-10 LinBox.TEST_VECTOR_CONVERSION[0m
+  
+  [2X> LinBox.TEST_VECTOR_CONVERSION( [0X[3Xv[0X[2X ) _______________________________[0Xfunction
+  
+  Convert  the  vector  [3Xv[0m  into  the  internal  LinBox  format and back again,
+  returning the result.
+  
+  [1X5.1-11 LinBox.TEST_MATRIX_CONVERSION[0m
+  
+  [2X> LinBox.TEST_MATRIX_CONVERSION( [0X[3XM[0X[2X ) _______________________________[0Xfunction
+  
+  Convert  the  matrix  [3XM[0m  into  the  internal  LinBox  format and back again,
+  returning the result.
+  

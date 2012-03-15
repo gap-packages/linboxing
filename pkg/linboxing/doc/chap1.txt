@@ -1,0 +1,114 @@
+  
+  [1X1 Introduction[0X
+  
+  The LinBox C++ library ([7Xhttp://www.linalg.org[0m) performs exact linear algebra
+  and  provides  a set of routines for the solution of linear algebra problems
+  such  as  rank, determinant, and the solution of linear systems. It provides
+  representations  for both sparse and dense matrices over integers and finite
+  fields.  It has a particular emphasis on black-box matrix methods (which are
+  very  efficient  over  sparse  matrices),  but  increasingly  also  provides
+  elimination-based  routines  for  dense matrices using the industry-standard
+  BLAS numeric routines.
+  
+  [5XGAP[0m  ([7Xhttp://www.gap-system.org[0m)  is  a  system  for  computational discrete
+  algebra, with particular emphasis on Computational Group Theory. It provides
+  good implementations of exact linear algebra routines on dense matrices over
+  all  common  fields  and  the integers. Typically, [5XGAP[0m's versions are faster
+  than  LinBox  for small finite fields (i.e. order less than 256), but LinBox
+  is much faster for larger finite fields and the integers.
+  
+  The  [5Xlinboxing[0m  (LinBox-in-GAP)  package provides an interface to the LinBox
+  C++ library from [5XGAP[0m. It provides alternative versions of [5XGAP[0m linear algebra
+  routines  which are mapped through to the equivalent LinBox library routines
+  at the [5XGAP[0m kernel level. The functions provided by the [5Xlinboxing[0m package are
+  named  the  same  as  the  [5XGAP[0m equivalents, but are all contained within the
+  [10XLinBox[0m  record,  and  so are prefixed with `[10XLinBox.[0m'. The functions provided
+  are
+  
+  --    [2XLinBox.Determinant[0m ([14X3.1-1[0m)
+  
+  --    [2XLinBox.Rank[0m ([14X3.1-2[0m)
+  
+  --    [2XLinBox.Trace[0m ([14X3.1-3[0m)
+  
+  --    [2XLinBox.SolutionMat[0m ([14X3.1-4[0m)
+  
+  over the integers and prime fields.
+  
+  The  linear  algebra  routines provided by the [5Xlinboxing[0m package are, in the
+  majority  of  cases,  considerably  faster than the native [5XGAP[0m versions, and
+  scale better with matrix size. This speed is at the expense of memory, since
+  the  [5XGAP[0m matrices and vector must be copied into a memory format that LinBox
+  can use.
+  
+  
+  [1X1.1 Sample timings[0X
+  
+  The  tables below give typical timings when performing operations on a 500 x
+  500 matrix. All of the timings given below were performed on a 3.20GHz Intel
+  Core  i7  Linux  machine  using  [5XGAP[0m version 4.4.12 and version 0.5.2 of the
+  [5Xlinboxing[0m  package. The tests consider the various equivalent methods in [5XGAP[0m
+  and   [5Xlinboxing[0m,   and  the  various  different  data  representations  used
+  internally by [5XGAP[0m
+  
+  The  most  dramatic  speedups  are  seen for matrices of integers, where the
+  [5Xlinboxing[0m  routines  are  significantly  faster. It is also faster for large
+  prime  fields,  but  [5XGAP[0m  is  better for small finite fields due to its very
+  efficient  internal  representation of those fields. These observations hold
+  for all Rank, Determinant and SolutionMat calculations, but the Trace method
+  is so simple that it appears to be always faster to use [5XGAP[0m
+  
+  These  timings  are offered as guidelines. The speedup should be larger with
+  larger  matrices,  but  a  gain  can also be seen with much smaller matrices
+  (e.g.  the  Rank  of  a  15  x 15 integer matrix). The user is encouraged to
+  perform  their own timing experiments to assess the likely gain in their own
+  cases.
+  
+      ---------------------------------------------------------------------------------------------------
+      | Operation                          | Standard [5XGAP[0m method | [5XGAP[0m [10XIntMat[0m method | [5Xlinboxing[0m method | 
+      ---------------------------------------------------------------------------------------------------
+      | RankMat / Length(BaseIntMat)       |            2822.08s |            73.21s |            0.10s | 
+      | DeterminantMat / DeterminantIntMat |             184.71s |            78.84s |            7.12s | 
+      | SolutionMat / SolutionIntMat       |            6423.93s |           144.92s |            2.19s | 
+      | TraceMat                           |               0.00s |                 - |            0.52s | 
+      ---------------------------------------------------------------------------------------------------
+  
+       [1XTable:[0X 500 x 500 matrices of small integers
+  
+  
+      ---------------------------------------------------------------------------------------------------
+      | Operation                          | Standard [5XGAP[0m method | [5XGAP[0m [10XIntMat[0m method | [5Xlinboxing[0m method | 
+      ---------------------------------------------------------------------------------------------------
+      | RankMat / Length(BaseIntMat)       |            6375.83s |           149.78s |            0.32s | 
+      | DeterminantMat / DeterminantIntMat |            2998.70s |           133.67s |          103.74s | 
+      | SolutionMat / SolutionIntMat       |           15210.10s |           840.73s |           34.52s | 
+      | TraceMat                           |               0.00s |                 - |            0.73s | 
+      ---------------------------------------------------------------------------------------------------
+  
+       [1XTable:[0X 500 x 500 matrices of large integers
+  
+  
+      -----------------------------------------------------------
+      | Operation      | Standard [5XGAP[0m method | [5Xlinboxing[0m method | 
+      -----------------------------------------------------------
+      | RankMat        |               1.95s |            0.14s | 
+      | DeterminantMat |               1.92s |            0.14s | 
+      | SolutionMat    |               3.64s |            0.33s | 
+      | TraceMat       |               0.00s |            0.35s | 
+      -----------------------------------------------------------
+  
+       [1XTable:[0X 500 x 500 matrices over a large prime field (GF(10007))
+  
+  
+      -----------------------------------------------------------
+      | Operation      | Standard [5XGAP[0m method | [5Xlinboxing[0m method | 
+      -----------------------------------------------------------
+      | RankMat        |               0.00s |            0.06s | 
+      | DeterminantMat |               0.00s |            0.06s | 
+      | SolutionMat    |               0.00s |            0.21s | 
+      | TraceMat       |               0.00s |            0.29s | 
+      -----------------------------------------------------------
+  
+       [1XTable:[0X 500 x 500 matrices over a small prime field (GF(2))
+  
+  

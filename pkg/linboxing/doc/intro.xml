@@ -1,0 +1,185 @@
+<!-- 
+  LINBOXING - intro.xml
+  Introduction documentation section 
+  Paul Smith
+  
+  Copyright (C)  2007-2008
+  Paul Smith
+  National University of Ireland Galway
+  
+  This file is part of the linboxing GAP package. 
+  
+  The linboxing package is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by the 
+  Free Software Foundation; either version 2 of the License, or (at your 
+  option) any later version.
+  
+  The linboxing package is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+  or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+  more details.
+  
+  You should have received a copy of the GNU General Public License along with 
+  this program.  If not, see <http://www.gnu.org/licenses/>.
+  
+  $Id: intro.xml 104 2008-04-23 16:28:53Z pas $
+  -->
+  
+<!-- ********************************************************** -->
+<Chapter> 
+  <Heading>Introduction</Heading>
+
+    The LinBox C++ library (<URL>http://www.linalg.org</URL>) performs exact 
+    linear algebra and provides a
+    set of routines for the solution of linear algebra problems such as 
+    rank, determinant, and the solution of linear systems. It provides 
+    representations for both sparse and dense matrices over integers and
+    finite fields. It has a particular emphasis on black-box matrix methods
+    (which are very efficient over sparse matrices), but increasingly also 
+    provides elimination-based routines for dense matrices using the 
+    industry-standard BLAS numeric routines.
+    <P/>
+    &GAP; (<URL>http://www.gap-system.org</URL>) is a system for computational 
+    discrete algebra, with particular emphasis on Computational Group Theory.
+    It provides good implementations of exact linear algebra routines on dense 
+    matrices over all common fields and the integers. Typically, &GAP;'s 
+    versions are faster than LinBox for small finite fields (i.e. order less 
+    than 256), but LinBox is much faster for larger finite fields and the 
+    integers.
+    <P/>
+    The &linboxing; (LinBox-in-GAP) package provides an interface to the LinBox 
+    C++ library from &GAP;. It provides alternative versions of &GAP; linear 
+    algebra routines which are mapped through to the equivalent LinBox library 
+    routines at the &GAP; kernel level. The functions provided by the 
+    &linboxing; package are named the same as the &GAP; equivalents, but are 
+    all contained within the <C>LinBox</C> record, and so are prefixed with 
+    `<C>LinBox.</C>'. The functions provided are
+    <List>
+      <Item><Ref Func="LinBox.Determinant"/></Item>
+      <Item><Ref Func="LinBox.Rank"/></Item>
+      <Item><Ref Func="LinBox.Trace"/></Item>
+      <Item><Ref Func="LinBox.SolutionMat"/></Item>
+    </List>
+    over the integers and prime fields.
+    <P/>
+    The linear algebra routines provided by the &linboxing; package are, in the 
+    majority of cases, considerably faster than the native &GAP; versions, and 
+    scale better with matrix size. This speed is at the expense of memory, since 
+    the &GAP; matrices and vector must be copied into a memory format that 
+    LinBox can use.
+
+  <Section>
+    <Heading>Sample timings</Heading>
+
+    The tables below give typical timings when performing operations on a 
+    <M>500 \times 500</M> matrix. All of the timings given below were performed 
+    on a 3.20GHz Intel Core i7 Linux machine using &GAP; version 4.4.12 and 
+    version 0.5.2 of the &linboxing; package. The tests consider the various 
+    equivalent methods in &GAP; and &linboxing;, and the various different
+    data representations used internally by &GAP;
+    <P/>
+    The most dramatic speedups are seen for matrices of integers, where the
+    &linboxing; routines are significantly faster. It is also faster for large
+    prime fields, but &GAP; is better for small finite fields due to its very 
+    efficient internal representation of those fields. These observations hold 
+    for all Rank, Determinant and SolutionMat calculations, but the Trace method 
+    is so simple that it appears to be always faster to use &GAP;
+    <P/>
+    These timings are offered as guidelines. The speedup should be larger with
+    larger matrices, but a gain can also be seen with much smaller matrices
+    (e.g. the Rank of a <M>15 \times 15</M> integer matrix). The user is 
+    encouraged to perform their own timing experiments to assess the likely gain
+    in their own cases.
+
+    <Table Align="|l|r|r|r|">
+      <Caption><M>500 \times 500</M> matrices of small integers</Caption>
+      <HorLine/>
+      <Row>
+        <Item>Operation</Item><Item>Standard &GAP; method</Item><Item>&GAP; <C>IntMat</C> method</Item><Item>&linboxing; method</Item>
+      </Row>
+      <HorLine/>
+      <Row>
+        <Item>RankMat / Length(BaseIntMat)</Item><Item>2822.08s</Item><Item>73.21s</Item><Item>0.10s</Item>
+      </Row>
+      <Row>
+        <Item>DeterminantMat / DeterminantIntMat</Item><Item>184.71s</Item><Item>78.84s</Item><Item>7.12s</Item>
+      </Row>
+      <Row>
+        <Item>SolutionMat / SolutionIntMat</Item><Item>6423.93s</Item><Item>144.92s</Item><Item>2.19s</Item>
+      </Row>
+      <Row>
+        <Item>TraceMat</Item><Item>0.00s</Item><Item>-</Item><Item>0.52s</Item>
+      </Row>
+      <HorLine/>
+    </Table>
+
+    <Table Align="|l|r|r|r|">
+      <Caption><M>500 \times 500</M> matrices of large integers</Caption>
+      <HorLine/>
+      <Row>
+        <Item>Operation</Item><Item>Standard &GAP; method</Item><Item>&GAP; <C>IntMat</C> method</Item><Item>&linboxing; method</Item>
+      </Row>
+      <HorLine/>
+      <Row>
+        <Item>RankMat / Length(BaseIntMat)</Item><Item>6375.83s</Item><Item>149.78s</Item><Item>0.32s</Item>
+      </Row>
+      <Row>
+        <Item>DeterminantMat / DeterminantIntMat</Item><Item>2998.70s</Item><Item>133.67s</Item><Item>103.74s</Item>
+      </Row>
+      <Row>
+        <Item>SolutionMat / SolutionIntMat</Item><Item>15210.10s</Item><Item>840.73s</Item><Item>34.52s</Item>
+      </Row>
+      <Row>
+        <Item>TraceMat</Item><Item>0.00s</Item><Item>-</Item><Item>0.73s</Item>
+      </Row>
+      <HorLine/>
+    </Table>
+
+    <Table Align="|l|r|r|">
+      <Caption><M>500 \times 500</M> matrices over a large prime field (<M>GF(10007)</M>)</Caption>
+      <HorLine/>
+      <Row>
+        <Item>Operation</Item><Item>Standard &GAP; method</Item><Item>&linboxing; method</Item>
+      </Row>
+      <HorLine/>
+      <Row>
+        <Item>RankMat</Item><Item>1.95s</Item><Item>0.14s</Item>
+      </Row>
+      <Row>
+        <Item>DeterminantMat</Item><Item>1.92s</Item><Item>0.14s</Item>
+      </Row>
+      <Row>
+        <Item>SolutionMat</Item><Item>3.64s</Item><Item>0.33s</Item>
+      </Row>
+      <Row>
+        <Item>TraceMat</Item><Item>0.00s</Item><Item>0.35s</Item>
+      </Row>
+      <HorLine/>
+    </Table>
+
+    <Table Align="|l|r|r|">
+      <Caption><M>500 \times 500</M> matrices over a small prime field (<M>GF(2)</M>)</Caption>
+      <HorLine/>
+      <Row>
+        <Item>Operation</Item><Item>Standard &GAP; method</Item><Item>&linboxing; method</Item>
+      </Row>
+      <HorLine/>
+      <Row>
+        <Item>RankMat</Item><Item>0.00s</Item><Item>0.06s</Item>
+      </Row>
+      <Row>
+        <Item>DeterminantMat</Item><Item>0.00s</Item><Item>0.06s</Item>
+      </Row>
+      <Row>
+        <Item>SolutionMat</Item><Item>0.00s</Item><Item>0.21s</Item>
+      </Row>
+      <Row>
+        <Item>TraceMat</Item><Item>0.00s</Item><Item>0.29s</Item>
+      </Row>
+      <HorLine/>
+    </Table>
+
+  </Section>
+
+</Chapter>
+  

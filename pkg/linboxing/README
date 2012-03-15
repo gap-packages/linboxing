@@ -1,0 +1,111 @@
+README file for the 'linboxing' GAP4 package
+============================================
+Paul Smith 
+paul.smith@st-andrews.ac.uk
+9 June 2011
+
+
+1. OVERVIEW
+
+The linboxing package for GAP provides a kernel-level interface to the 
+LinBox C++ exact linear algebra library (http://www.linalg.org). It
+provides alternative versions of some GAP linear algebra routines that 
+are considerably faster than the equivalent GAP versions.
+
+It is implemented in GAP, C and C++.
+
+-------------------------------------------------------------------------------
+
+2. BEFORE INSTALLATION
+
+Before installing the linboxing package, you need to have the LinBox C++ 
+library (version 1.1.6 or 1.1.7) installed. LinBox can be downloaded from
+    http://www.linalg.org
+and to build it you will also need to have the Givaro library (version
+3.2.16 or 3.3.3, depending on the LinBox version) from
+    http://ljk.imag.fr/CASYS/LOGICIELS/givaro/
+You will also need installed versions of the GNU Multiprecision (GMP) library 
+and the BLAS and LAPACK linear algebra libraries. 
+
+Further details of these requirements, are included in chapter 2.1 of the user 
+guide included in the 'doc/userguide' subdirectory of this archive. 
+
+-------------------------------------------------------------------------------
+
+3. INSTALLATION
+
+To get the newest version of this GAP 4 package download one of the archive 
+files
+    linboxing-x.x.tar.gz
+    linboxing-x.x.zoo
+    linboxing-x.x.tar.bz2
+    linboxing-x.x.zip
+and unpack it using 
+    gunzip linboxing-x.x.tar.gz; tar xvf linbox-gap-x.x.tar
+respectively
+    unzoo -x linboxing-x.x.zoo
+and so on.
+
+Do this in a directory called 'pkg', preferably (but not necessarily) in the 
+'pkg' subdirectory of your GAP 4 installation. It creates a subdirectory called 
+'linboxing-x.x'.
+
+To install this package do
+    cd linboxing-x.x
+    ./configure 
+    make
+
+The package will not work without this step.
+
+If you installed the package in another 'pkg' directory than the standard 'pkg' 
+directory in your GAP 4 installation, then you have to add the path to the 
+directory containing your 'pkg' directory to GAP's list of directories. This 
+can be done by starting GAP with the '-l' command line option followed by the 
+name of the directory and a semicolon. Then your directory is prepended to the 
+list of directories searched. Otherwise the package is not found by GAP. Of 
+course, you can add this option to your GAP startup script.
+
+-------------------------------------------------------------------------------
+
+4.  RUNNING GAP WITH LINBOX
+
+The memory management in LinBox conficts with that in GAP, and if you run
+GAP with the standard settings and try to use the linboxing package, you are 
+likely to find that it exits abruptly with the message 'cannot extend the 
+workspace any more'. There are (currently) two solutions to this problem:
+
+- Allocate GAP a large workspace 
+The -m command-line switch tells GAP to allocate a certain number of bytes
+to the GAP workspace when it starts up. If this is sufficiently large, GAP 
+will not need to extend its workspace further, and will not conflict with 
+LinBox. For example,
+    gap -m 256M 
+will allocate 256Mb to GAP when it starts.
+
+- Allocate some special memory for LinBox to use
+The -a command-line switch tells GAP to set aside a certain number of bytes
+for 'malloc', which is the type of memory that LinBox uses. LinBox can then
+use this memory without interfering with GAP's own memory. For example,
+    gap -a 50M
+will allocate 50Mb for LinBox to use.
+
+The linboxing package is not loaded by default. To load the linboxing package,
+run GAP and type
+    LoadPackage("linboxing");
+You can put this command into your .gaprc file if you plan to use the linboxing
+package often.
+
+Before using the package for any serious calculation, you should check its
+correct operation by running the test suite. This can be run from within GAP
+by typing
+    TestLinBox();
+
+-------------------------------------------------------------------------------
+
+5.  DOCUMENTATION
+
+See the doc/ directory of the linboxing package for further documentation in 
+various formats. The documentation can also be downloaded from the package 
+website.
+
+-------------------------------------------------------------------------------

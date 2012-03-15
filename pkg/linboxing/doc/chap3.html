@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>GAP (linboxing) - Chapter 3: Function Reference</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="GAPDoc2HTML" />
+<link rel="stylesheet" type="text/css" href="manual.css" />
+</head>
+<body>
+
+
+<div class="chlinktop"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<div class="chlinkprevnexttop">&nbsp;<a href="chap0.html">Top of Book</a>&nbsp;  &nbsp;<a href="chap2.html">Previous Chapter</a>&nbsp;  &nbsp;<a href="chap4.html">Next Chapter</a>&nbsp;  </div>
+
+<p><a id="X7ECCCA82839EA283" name="X7ECCCA82839EA283"></a></p>
+<div class="ChapSects"><a href="chap3.html#X7ECCCA82839EA283">3 <span class="Heading">Function Reference</span></a>
+<div class="ContSect"><span class="nocss">&nbsp;</span><a href="chap3.html#X7B4903C879201480">3.1 <span class="Heading">Replacements for <strong class="pkg">GAP</strong> functions</span></a>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7ACB12B684D2F52F">3.1-1 LinBox.Determinant</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X781B821B7E4D2CD4">3.1-2 LinBox.Rank</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7F68AD6A7A002514">3.1-3 LinBox.Trace</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7AE7EDC878216815">3.1-4 LinBox.SolutionMat</a></span>
+</div></div>
+<div class="ContSect"><span class="nocss">&nbsp;</span><a href="chap3.html#X8308D685809A4E2F">3.2 <span class="Heading">Miscellaneous functions</span></a>
+<div class="ContSSBlock">
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X868128F9850CB776">3.2-1 LinBox.SetMessages</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7C6FE0C0837A60B7">3.2-2 MakeLinboxingDoc</a></span>
+<span class="ContSS"><br /><span class="nocss">&nbsp;&nbsp;</span><a href="chap3.html#X7EB865F07B011E65">3.2-3 TestLinboxing</a></span>
+</div></div>
+</div>
+
+<h3>3 <span class="Heading">Function Reference</span></h3>
+
+<p><a id="X7B4903C879201480" name="X7B4903C879201480"></a></p>
+
+<h4>3.1 <span class="Heading">Replacements for <strong class="pkg">GAP</strong> functions</span></h4>
+
+<p><a id="X7ACB12B684D2F52F" name="X7ACB12B684D2F52F"></a></p>
+
+<h5>3.1-1 LinBox.Determinant</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.Determinant</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.DeterminantMat</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.DeterminantIntMat</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns the determinant of the square matrix <var class="Arg">M</var>. The entries of <var class="Arg">M</var> must be integers or over a prime field.</p>
+
+
+<table class="example">
+<tr><td><pre>
+gap&gt; LinBox.DeterminantMat([[1,2,3],[4,5,6],[7,8,9]]);
+0
+</pre></td></tr></table>
+
+<p><a id="X781B821B7E4D2CD4" name="X781B821B7E4D2CD4"></a></p>
+
+<h5>3.1-2 LinBox.Rank</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.Rank</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.RankMat</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns the maximal number of linearly-independent rows of the matrix <var class="Arg">M</var>. The entries of <var class="Arg">M</var> must be integers or over a prime field.</p>
+
+
+<table class="example">
+<tr><td><pre>
+gap&gt; LinBox.RankMat([[1,2,3],[4,5,6],[7,8,9]]);
+2
+</pre></td></tr></table>
+
+<p><a id="X7F68AD6A7A002514" name="X7F68AD6A7A002514"></a></p>
+
+<h5>3.1-3 LinBox.Trace</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.Trace</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.TraceMat</code>( <var class="Arg">M</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>For a square matrix <var class="Arg">M</var>, returns the sum of the diagonal entries. The entries of <var class="Arg">M</var> must be integers or over a prime field. Note that this version (unlike the others in this package) is typically slower than the <strong class="pkg">GAP</strong> equivalent, but is provided for completeness.</p>
+
+
+<table class="example">
+<tr><td><pre>
+gap&gt; LinBox.TraceMat([[1,2,3],[4,5,6],[7,8,9]]);
+15
+</pre></td></tr></table>
+
+<p><a id="X7AE7EDC878216815" name="X7AE7EDC878216815"></a></p>
+
+<h5>3.1-4 LinBox.SolutionMat</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.SolutionMat</code>( <var class="Arg">M, b</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Returns a row vector <var class="Arg">x</var> that is a solution of the equation xM=b, or <code class="keyw">fail</code> if no solution exists. If the system is consistent, a random solution <var class="Arg">x</var> is returned. The entries of <var class="Arg">M</var> must be integers or over a prime field, but if they are integers then the solution may include rationals.</p>
+
+
+<table class="example">
+<tr><td><pre>
+gap&gt; LinBox.SolutionMat([[1,2,3],[4,5,6],[7,8,9]], [2,1,0]);
+[ -1, -1, 1 ]
+gap&gt; LinBox.SolutionMat([[1,2,3],[4,5,6],[7,8,9]], [2,1,0]);
+[ -5/4, -1/2, 3/4 ]
+</pre></td></tr></table>
+
+<p><a id="X8308D685809A4E2F" name="X8308D685809A4E2F"></a></p>
+
+<h4>3.2 <span class="Heading">Miscellaneous functions</span></h4>
+
+<p><a id="X868128F9850CB776" name="X868128F9850CB776"></a></p>
+
+<h5>3.2-1 LinBox.SetMessages</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; LinBox.SetMessages</code>( <var class="Arg">on</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Turns on or off the printing of the LinBox library commentator messages. If the boolean argument <var class="Arg">on</var> is set to <code class="keyw">true</code> then messages will be printed, else no messages will be displayed.</p>
+
+<p><a id="X7C6FE0C0837A60B7" name="X7C6FE0C0837A60B7"></a></p>
+
+<h5>3.2-2 MakeLinboxingDoc</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; MakeLinboxingDoc</code>( <var class="Arg">[make-internal]</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Builds this documentation from the <strong class="pkg">linboxing</strong> package source files. This should not normally need doing: the current documentation is built and included with the package release.</p>
+
+<p>If the optional boolean argument <var class="Arg">make-internal</var> is <code class="keyw">true</code> then the internal (undocumented!) functions are included in this manual.</p>
+
+<p><a id="X7EB865F07B011E65" name="X7EB865F07B011E65"></a></p>
+
+<h5>3.2-3 TestLinboxing</h5>
+
+<div class="func"><table class="func" width="100%"><tr><td class="tdleft"><code class="func">&gt; TestLinboxing</code>( <var class="Arg">[num-tests]</var> )</td><td class="tdright">( function )</td></tr></table></div>
+<p>Test the installation of <strong class="pkg">linboxing</strong> and print profiling information. This tries all the <strong class="pkg">linboxing</strong> package's algorithms with random vectors and matrices over random fields (covering all the distinct supported field types). The results are compared with the equivalent <strong class="pkg">GAP</strong> functions, and the relative times displayed.</p>
+
+<p>The optional argument <var class="Arg">num-tests</var> specifies how many times to run each test: the default is 5 times.</p>
+
+
+<div class="chlinkprevnextbot">&nbsp;<a href="chap0.html">Top of Book</a>&nbsp;  &nbsp;<a href="chap2.html">Previous Chapter</a>&nbsp;  &nbsp;<a href="chap4.html">Next Chapter</a>&nbsp;  </div>
+
+
+<div class="chlinkbot"><span class="chlink1">Goto Chapter: </span><a href="chap0.html">Top</a>  <a href="chap1.html">1</a>  <a href="chap2.html">2</a>  <a href="chap3.html">3</a>  <a href="chap4.html">4</a>  <a href="chapInd.html">Ind</a>  </div>
+
+<hr />
+<p class="foot">generated by <a href="http://www.math.rwth-aachen.de/~Frank.Luebeck/GAPDoc">GAPDoc2HTML</a></p>
+</body>
+</html>
