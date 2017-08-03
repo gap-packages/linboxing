@@ -64,27 +64,10 @@ can separate this into different source files.
 
 #include "convert.h"
 
-#ifdef GAP_4_5
 extern "C"
 {
   #include <src/gmpints.h>
 }
-#endif // GAP_4_5
-
-//////////////////////////////////////////////////////////////////////////////
-
-#ifndef GAP_4_5
-
-/// This macro is copied from the GAP source file $GAPROOT/src/integer.c
-/// It returns the number of <tt>TypDigit</tt>s in a long integer.
-#define SIZE_INT(op)    (SIZE_OBJ(op) / sizeof(TypDigit))
-
-/// This macro is copied from the GAP source file $GAPROOT/src/integer.c
-/// It returns the address of the first digit in a long integer as a 
-/// pointer to a <tt>TypDigit</tt>.
-#define ADDR_INT(op)    ((TypDigit*)ADDR_OBJ(op))
-
-#endif // GAP_4_5
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -140,25 +123,6 @@ LBIntegers::Element LinBox_GAPInt(Obj z)
       throw GAPLinBoxException("Only integers and prime fields are supported. Elements over characteristic zero must be integer.");
     }
 
-#ifndef USE_GMP
-    // see $GAPROOT/src/integer.c for details of the format
-    // The data type is a C-style array of length SIZE_INT(z)
-    // with entries that are digits (of type TypDigit) in a number of base
-    // INTBASE. Read these out directly and build up the number in a 
-    // LinBox integer
-    LBIntegers::Element e = LBInteger_Int(0);
-    LBIntegers::Element base = LBInteger_Int(INTBASE);
-    TypDigit* zp = ADDR_INT(z);
-    for(size_t p = 0; p < SIZE_INT(z); p++)
-    {
-      e += LBInteger_Int(zp[p]) * pow(base, p);
-    }
-
-    if(TNUM_OBJ(z) == T_INTNEG)
-      e *= -1;
-
-    return e;
-#else 
     // It is a GMP integer
     TypLimb* ptr = (TypLimb*)ADDR_INT(z);
     TypGMPSize size = SIZE_INT(z);
@@ -169,34 +133,6 @@ LBIntegers::Element LinBox_GAPInt(Obj z)
       e = Integer::negin(e);
     
     return e;
-#endif 
-
-/*
-    This orginal version is a little slower
-    
-    It uses GAP's arithmetic to break the input object z into chunks
-    that are no bigger than a GAP small integer, and builds up the 
-    LinBox integer from those.
-    
-    LBIntegers::Element e;
-    // Create a GAP (large) integer that is one larger than the biggest
-    // small integer
-    Obj GAPmod = PowInt(INTOBJ_INT(2), INTOBJ_INT(NR_SMALL_INT_BITS));
-    LBIntegers::Element ZZmod = pow(LBIntegers::Element(2), NR_SMALL_INT_BITS);
-    // z modulo this number will be a small integer
-    e = LBIntegers::Element(INT_INTOBJ(ModInt(z, GAPmod)));
-    Obj m = QuoInt(z, GAPmod);
-    // Now divide our integer by mod and repeat
-    long unsigned int p = 1;
-    for( ; !IS_INTOBJ(m); ++p)
-    {
-      Obj r = ModInt(m, GAPmod);
-      e += LBIntegers::Element(INT_INTOBJ(r)) * pow(ZZmod, p);
-      // And divide again
-      m = QuoInt(m, GAPmod);
-    }
-    e += LBIntegers::Element(INT_INTOBJ(m)) * pow(ZZmod, p);
-*/
   }
 }
 
@@ -223,66 +159,6 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
     return INTOBJ_INT(Int_Element(e));
   else
   {
-/*
-    It is slower (in this case) to build a GAP large integer directly
-
-    //see $GAPROOT/src/integer.c for details of the format
-    //We can read out of the object directly, but timings
-    //indicate that this is slower (by almost a factor of two) than 
-    //the code below, which does it base 2^NR_SMALL_INT_BITS rather than
-    //base INTBASE
-    LBIntegers::Element base(INTBASE);
-    LBIntegers::Element ee = e;
-    bool neg = false;
-    if(ee < 0)
-    {
-      ee *= -1;
-      neg = true;
-    }
-
-    // Count the number of digits (including padding)
-    LBIntegers::Element maxdigit(INTBASE);
-    Int d = 1;
-    for(; maxdigit < ee; maxdigit = maxdigit * INTBASE, d++);
-    int pad = (4 - (d % 4)) % 4;
-    d += pad;
-
-    Obj z = NewBag(neg ? T_INTNEG : T_INTPOS, d * sizeof(TypDigit));
-    TypDigit* zd = ADDR_INT(z);
-    while(ee > base)
-    {
-      *zd++ = TypDigit(ee % base);
-      ee /= base;
-    }
-    *zd++ = TypDigit(ee);
-    for(int i = 0; i < pad; i++)
-    {
-      *zd++ = TypDigit(0);
-    }
-*/
-#ifndef USE_GMP
-    // Create a GAP (large) integer that is one larger than the biggest
-    // small integer
-    Obj GAPmod = PowInt(INTOBJ_INT(2), INTOBJ_INT(NR_SMALL_INT_BITS));
-    LBIntegers::Element ZZmod = pow(LBInteger_Int(2), NR_SMALL_INT_BITS);
-    // z modulo this number will be a small integer
-    Obj z = INTOBJ_INT(Int_Element(e % ZZmod));
-    LBIntegers::Element m = e / ZZmod;
-    // Now divide our integer by mod and repeat
-    Obj b = GAPmod;
-    while(!IsGAPSmallInt(m))
-    {
-      LBIntegers::Element r = m % ZZmod;
-      z = SumInt(z, ProdInt(INTOBJ_INT(Int_Element(r)), b));
-      // And divide again
-      m = m / ZZmod;
-      // And calculate the next power of the base
-      b = ProdInt(b, GAPmod);
-    }
-    z = SumInt(z, ProdInt(INTOBJ_INT(Int_Element(m)), b));
-
-    return z;
-#else
     Obj z;
     if(e.sign() < 0) 
     {
@@ -305,7 +181,6 @@ Obj GAP_LinBoxInt(const LBIntegers::Element& e)
     // Is this necessary?
     z = GMP_NORMALIZE(z);
     return z;
-#endif //GAP_4_5
   }   
 }
 
