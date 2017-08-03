@@ -33,9 +33,6 @@ AC_PREFIX_DEFAULT([${PWD}/src])
 AC_PROG_CXX
 AC_PROG_CC
 
-## Find out what the best compiler flags are
-AX_CC_MAXOPT
-
 ## 
 if test "$ac_test_CXXFLAGS" != "set"; then
   AC_LANG_PUSH(C++)
