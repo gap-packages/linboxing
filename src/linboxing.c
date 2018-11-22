@@ -150,34 +150,10 @@ static StructGVarFunc GVarFuncs[] =
    "linboxfuncs.cc:FuncRANK" /* String to display function location */
   }, 
 
-  {"DETERMINANT",
-   2,                    
-   "M, fielddata",       
-   FuncDETERMINANT, 
-   "linboxfuncs.cc:FuncDETERMINANT"
-  }, 
-
-  {"TRACE",
-   2,                    
-   "M, fielddata",       
-   FuncTRACE, 
-   "linboxfuncs.cc:FuncTRACE"
-  }, 
-
-  {"SOLVE",
-   3,                    
-   "M, b, fielddata",       
-   FuncSOLVE, 
-   "linboxfuncs.cc:FuncSOLVE"
-  }, 
-
-  {"SMITH_FORM",
-   2,                    
-   "M, fielddata",       
-   FuncSMITH_FORM, 
-   "linboxfuncs.cc:FuncSMITH_FORM"
-  }, 
-
+  GVAR_FUNC(DETERMINANT, 2, "M, fielddata"),
+  GVAR_FUNC(TRACE, 2, "M, fielddata"),
+  GVAR_FUNC(SOLVE, 3, "M, b, fielddata"),
+  GVAR_FUNC(SMITH_FORM, 2, "M, fielddata"),
   {"SetMessages", 
    1,
    "on",
@@ -235,7 +211,7 @@ static Int PostRestore(StructInitInfo* module)
     tmp = (Obj)NEW_PREC(0);
   }
 
-  /* Write the names of my functions into th LinBox record */
+  /* Write the names of my functions into the LinBox record */
   for(i = 0; GVarFuncs[i].name != 0; i++) 
   {
     AssPRec(
