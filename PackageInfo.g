@@ -31,7 +31,8 @@ SetPackageInfo( rec(
 PackageName := "linboxing",
 Subtitle := "access to LinBox linear algebra functions from GAP",
 Version := "0.5.2",
-Date := "19/05/2011",
+Date := "19/05/2011", # dd/mm/yyyy format
+License := "GPL-2.0-or-later",
 
 Persons := [
   rec( 
