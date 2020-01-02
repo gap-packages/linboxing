@@ -216,7 +216,7 @@ static Int PostRestore(StructInitInfo* module)
   {
     AssPRec(
       tmp, 
-      RNamName((Char*)GVarFuncs[i].name), 
+      RNamName(GVarFuncs[i].name), 
       NewFunctionC(
         GVarFuncs[i].name, 
         GVarFuncs[i].nargs, 
