@@ -72,9 +72,6 @@ An introduction to the GAP-LinBox mappings can be found
 
 #include <string.h>
 
-#ifdef CONFIG_H
-  #include <config.h>  /* Include GAP's config.h if we could find it */
-#endif
 #include <src/compiled.h>
 
 #include "linboxing.h"
