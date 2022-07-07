@@ -20,7 +20,7 @@
   more details.
   
   You should have received a copy of the GNU General Public License along with 
-  this program.  If not, see <http://www.gnu.org/licenses/>.
+  this program.  If not, see <https://www.gnu.org/licenses/>.
   
   $Id: intro.xml 104 2008-04-23 16:28:53Z pas $
   -->
@@ -29,7 +29,7 @@
 <Chapter> 
   <Heading>Introduction</Heading>
 
-    The LinBox C++ library (<URL>http://www.linalg.org</URL>) performs exact 
+    The LinBox C++ library (<URL>https://www.linalg.org</URL>) performs exact 
     linear algebra and provides a
     set of routines for the solution of linear algebra problems such as 
     rank, determinant, and the solution of linear systems. It provides 
@@ -39,7 +39,7 @@
     provides elimination-based routines for dense matrices using the 
     industry-standard BLAS numeric routines.
     <P/>
-    &GAP; (<URL>http://www.gap-system.org</URL>) is a system for computational 
+    &GAP; (<URL>https://www.gap-system.org</URL>) is a system for computational 
     discrete algebra, with particular emphasis on Computational Group Theory.
     It provides good implementations of exact linear algebra routines on dense 
     matrices over all common fields and the integers. Typically, &GAP;'s 

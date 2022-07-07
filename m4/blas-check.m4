@@ -12,7 +12,7 @@ AC_DEFUN([LB_CHECK_BLAS],
 [
 
 AC_ARG_WITH(blas,
-  [AC_HELP_STRING([--with-blas=<path>],
+  [AS_HELP_STRING([--with-blas=<path>],
   [specify prefix to which BLAS was installed])],
   [if test "$withval" = yes ; then
     BLAS_HOME_PATH="${DEFAULT_CHECKING_PATH}"

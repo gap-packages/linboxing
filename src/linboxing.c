@@ -21,7 +21,7 @@
   more details.
  
   You should have received a copy of the GNU General Public License along with 
-  this program.  If not, see <http://www.gnu.org/licenses/>.
+  this program.  If not, see <https://www.gnu.org/licenses/>.
  
 *****************************************************************************/
 
@@ -35,7 +35,7 @@ This file contains all of the pure C code that deals with GAP.
 /**
 @mainpage
 
-The %LinBox C++ library (http://www.linalg.org) performs exact linear algebra 
+The %LinBox C++ library (https://www.linalg.org) performs exact linear algebra 
 and provides a set of routines for the solution of linear algebra problems such 
 as rank, determinant, and the solution of linear systems. It provides 
 representations for both sparse and dense matrices over integers and
@@ -44,7 +44,7 @@ finite fields. It has a particular emphasis on black-box matrix methods
 provides elimination-based routines for dense matrices using the 
 industry-standard BLAS numeric routines.
 
-GAP (http://www.gap-system.org) is a system for computational discrete algebra,
+GAP (https://www.gap-system.org) is a system for computational discrete algebra,
 with a particular emphasis on computational group theory. It provides a 
 programming language and a number of libraries, and includes functions for
 defining vectors and matrices and performing exact linear algebra. However,

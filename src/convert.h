@@ -21,7 +21,7 @@
   more details.
  
   You should have received a copy of the GNU General Public License along with 
-  this program.  If not, see <http://www.gnu.org/licenses/>.
+  this program.  If not, see <https://www.gnu.org/licenses/>.
  
   $Id: convert.h 93 2008-01-31 14:07:52Z pas $
 

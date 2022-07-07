@@ -22,7 +22,7 @@
 ##  Public License for more details.
 ## 
 ##  You should have received a copy of the GNU General Public License along 
-##  with this program.  If not, see <http://www.gnu.org/licenses/>.
+##  with this program.  If not, see <https://www.gnu.org/licenses/>.
 ## 
 #############################################################################
 
@@ -82,7 +82,7 @@ Dependencies := rec(
   GAP := ">=4.4",
   NeededOtherPackages := [["GAPDoc", "1.0"]],
   SuggestedOtherPackages := [],
-  ExternalConditions := ["LinBox (http://www.linalg.org/) with version >= 1.1.6"]
+  ExternalConditions := ["LinBox (https://www.linalg.org/) with version >= 1.1.6"]
 ),
 
 AvailabilityTest := function()

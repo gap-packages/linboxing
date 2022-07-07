@@ -21,7 +21,7 @@
 ##  Public License for more details.
 ## 
 ##  You should have received a copy of the GNU General Public License along 
-##  with this program.  If not, see <http://www.gnu.org/licenses/>.
+##  with this program.  If not, see <https://www.gnu.org/licenses/>.
 ## 
 ##  $Id: linboxing.gd 98 2008-02-01 10:27:51Z pas $
 ##

@@ -17,7 +17,7 @@ AC_DEFUN([LB_CHECK_GIVARO],
 [
 
 AC_ARG_WITH(givaro,
-  [AC_HELP_STRING([--with-givaro=<path>],
+  [AS_HELP_STRING([--with-givaro=<path>],
     [specify prefix to which givaro was installed])],
   [if test "$withval" = yes ; then
     GIVARO_HOME_PATH="${DEFAULT_CHECKING_PATH}"

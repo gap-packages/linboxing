@@ -21,7 +21,7 @@
   more details.
   
   You should have received a copy of the GNU General Public License along with 
-  this program.  If not, see <http://www.gnu.org/licenses/>.
+  this program.  If not, see <https://www.gnu.org/licenses/>.
   
   -->
   
@@ -58,11 +58,11 @@
       <C>g++</C>. Also needed are three standard mathematical libraries: 
       <List>
         <Item>the GNU Multiprecision Arithmetic (GMP) Library (see 
-          <URL>http://gmplib.org/</URL>)</Item>
+          <URL>https://gmplib.org/</URL>)</Item>
         <Item>a library which provides the BLAS linear algebra routines (see
-          <URL>http://www.netlib.org/blas/</URL>)</Item>
+          <URL>https://www.netlib.org/blas/</URL>)</Item>
         <Item>a library which provides the LAPACK linear algebra routines (see
-          <URL>http://www.netlib.org/lapack/</URL>)</Item>
+          <URL>https://www.netlib.org/lapack/</URL>)</Item>
       </List>
       Linux users should find all of these in their standard 
       package repositories. On Ubuntu, for example type the following to install
@@ -110,10 +110,10 @@
       this package has also been tested on version 1.1.6. It is not yet 
       compatible with newer versions of LinBox. Full installation instructions 
       come with the downloaded LinBox source archive, or are available from 
-      <URL>http://www.linalg.org/linbox-html/install-dist.html</URL>. 
+      <URL>https://www.linalg.org/linbox-html/install-dist.html</URL>. 
 
       Download the LinBox archive from 
-      <URL>http://www.linalg.org/linbox-1.1.7.tar.gz</URL> and use the following
+      <URL>https://www.linalg.org/linbox-1.1.7.tar.gz</URL> and use the following
       commands to extract and build it:
       <Listing>
         tar -xzf linbox-1.1.7.tar.gz

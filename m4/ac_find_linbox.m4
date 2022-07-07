@@ -18,7 +18,7 @@
 #   more details.
 #  
 #   You should have received a copy of the GNU General Public License along with 
-#   this program.  If not, see <http://www.gnu.org/licenses/>.
+#   this program.  If not, see <https://www.gnu.org/licenses/>.
 #  
 #   $Id: ac_find_linbox.m4 101 2008-04-22 15:08:20Z pas $
 
