@@ -40,7 +40,7 @@ AC_DEFUN([AC_FIND_LINBOX],
   #Allow the user to specify the location of LinBox
   #
   AC_ARG_WITH(linboxprefix, 
-    [AC_HELP_STRING([--with-linboxprefix=<path>], [specify prefix to which LinBox was installed])],
+    [AS_HELP_STRING([--with-linboxprefix=<path>], [specify prefix to which LinBox was installed])],
     [LINBOXDIR=$withval])
 
   OLD_LIBS=$LIBS

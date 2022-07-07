@@ -35,7 +35,7 @@ AC_DEFUN([AC_FIND_GMP],
   #Allow the user to specify the location of GMP
   #
   AC_ARG_WITH(gmpprefix,
-    [AC_HELP_STRING([--with-gmpprefix=<path>], [specify prefix to which GMP was installed])],
+    [AS_HELP_STRING([--with-gmpprefix=<path>], [specify prefix to which GMP was installed])],
     [GMPDIR=$withval])
 
   OLD_LIBS=$LIBS
