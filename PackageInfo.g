@@ -74,7 +74,6 @@ PackageDoc := rec(
   PDFFile   := "doc/manual.pdf",
   SixFile   := "doc/manual.six",
   LongTitle := "Kernel-level access to LinBox linear algebra",
-  Autoload  := true
 ),
 
 
