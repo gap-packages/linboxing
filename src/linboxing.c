@@ -72,7 +72,7 @@ An introduction to the GAP-LinBox mappings can be found
 
 #include <string.h>
 
-#include <src/compiled.h>
+#include "gap_all.h"
 
 #include "linboxing.h"
 
