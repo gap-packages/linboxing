@@ -81,7 +81,7 @@ Dependencies := rec(
   GAP := ">=4.4",
   NeededOtherPackages := [["GAPDoc", "1.0"]],
   SuggestedOtherPackages := [],
-  ExternalConditions := ["LinBox (https://www.linalg.org/) with version >= 1.1.6"]
+  ExternalConditions := [["LinBox with version >= 1.1.6", "https://www.linalg.org/"]],
 ),
 
 AvailabilityTest := function()
