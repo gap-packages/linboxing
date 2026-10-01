@@ -27,7 +27,7 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src
 
 EXTRA_DIST = \
-	CHANGES \
+	CHANGES.md \
 	LICENCE \
 	VERSION \
 	PackageInfo.g \
